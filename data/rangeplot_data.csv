@@ -1,0 +1,15 @@
+category,Vote for Clinton,Vote for Trump,group
+18-29,58,28,Age
+30-49,51,40,Age
+50-64,45,51,Age
+65+,44,53,Age
+Postgrad,66,29,Education
+4-year college grad,52,41,Education
+Some college,42,49,Education
+HS or less,44,51,Education
+Men,41,52,Gender
+Women,54,39,Gender
+White,39,54,Race/Ethnicity
+Black,91,6,Race/Ethnicity
+Hispanic,66,28,Race/Ethnicity
+Other,59,32,Race/Ethnicity

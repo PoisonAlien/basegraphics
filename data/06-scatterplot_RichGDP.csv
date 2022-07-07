@@ -1,0 +1,185 @@
+﻿country,regions,GDP per capita,Life expectancy,population
+Georgia,Asia,10100,74.3,3910000
+Ecuador,South America,10200,78.3,16900000
+Namibia,Africa,10500,65.7,2590000
+Egypt,Africa,10800,72.6,99400000
+St. Lucia,North America,10900,76.6,180000
+Malawi,Africa,1130,61,19200000
+St. Vincent and the Grenadines,North America,11400,72,110000
+Tunisia,Africa,11600,78,11700000
+Indonesia,Asia,11700,72,267000000
+Mozambique,Africa,1200,61.1,30500000
+Mongolia,Asia,12100,68.7,3120000
+Bosnia and Herzegovina,Europe,12100,77.9,3500000
+Qatar,Asia,121000,80.7,2690000
+South Africa,Africa,12300,63.5,57400000
+Sri Lanka,Asia,12400,77.8,21000000
+Albania,Europe,12400,78,2930000
+Eritrea,Africa,1250,64.6,5190000
+Peru,South America,12700,80.2,32600000
+Guinea,Africa,1280,61.9,13100000
+Maldives,Asia,13000,80.1,444000
+Suriname,South America,13200,71.6,568000
+Lebanon,Asia,13400,80.5,6090000
+Grenada,North America,13500,71.9,108000
+Algeria,Africa,13700,77.9,42000000
+Colombia,South America,13700,78.6,49500000
+North Korea,Asia,1390,71.1,25600000
+"Macedonia, FYR",Europe,14000,75.2,2090000
+Venezuela,South America,14200,75.9,32400000
+Brazil,South America,14300,75.7,211000000
+Comoros,Africa,1440,68,832000
+Madagascar,Africa,1460,63.4,26300000
+Togo,Africa,1480,63.1,7990000
+Serbia,Europe,14800,76.2,8760000
+Sierra Leone,Africa,1490,60,7720000
+Timor-Leste,Australia,1490,73.3,1320000
+Dominican Republic,North America,15200,76.1,10900000
+Guinea-Bissau,Africa,1550,59.7,1910000
+Gambia,Africa,1570,67.8,2160000
+Iraq,Asia,15900,68,39300000
+Barbados,North America,16000,76.8,286000
+China,Asia,16000,76.9,1420000000
+Costa Rica,North America,16200,81.4,4950000
+Botswana,Africa,16500,66.9,2330000
+Azerbaijan,Asia,16600,72.3,9920000
+Montenegro,Europe,16600,77.3,629000
+Thailand,Asia,16900,78.2,69200000
+Burkina Faso,Africa,1710,61.6,19800000
+Haiti,North America,1710,64.5,11100000
+Belarus,Europe,17200,73.8,9450000
+Mexico,North America,17300,76.8,131000000
+Iran,Asia,17400,76.5,82000000
+Gabon,Africa,17500,67.3,2070000
+Turkmenistan,Asia,17900,70.5,5850000
+Ethiopia,Africa,1800,66.4,108000000
+South Sudan,Africa,1820,60.7,12900000
+Uganda,Africa,1820,62.9,44300000
+Libya,Africa,18300,75.5,6470000
+Chad,Africa,1860,60.5,15400000
+Afghanistan,Asia,1870,58.7,36400000
+Kiribati,Australia,1890,62.2,118000
+Bulgaria,Europe,18900,75.3,7040000
+Argentina,South America,18900,77,44700000
+Rwanda,Africa,1930,68.3,12500000
+Zimbabwe,Africa,1950,60.2,16900000
+Cuba,North America,20000,79.3,11500000
+Mali,Africa,2020,62.9,19100000
+Equatorial Guinea,Africa,20500,66.1,1310000
+Mauritius,Africa,21000,74.9,1270000
+Antigua and Barbuda,North America,21000,77.6,103000
+Solomon Islands,Australia,2110,63.6,623000
+Uruguay,South America,21300,77.6,3470000
+Benin,Africa,2170,65,11500000
+Bahamas,North America,21900,74.1,399000
+Croatia,Europe,22600,77.7,4160000
+Romania,Europe,23400,75.5,19600000
+Panama,North America,23400,79.4,4160000
+Chile,South America,23400,80.7,18200000
+Nepal,Asia,2420,71.5,29600000
+Kazakhstan,Asia,24200,72,18400000
+Yemen,Asia,2430,67.1,28900000
+Russia,Europe,24800,71.1,144000000
+Turkey,Asia,24900,79.6,81900000
+Latvia,Europe,25500,75.1,1930000
+Greece,Europe,25500,81.3,11100000
+Senegal,Africa,2570,66.8,16300000
+Hungary,Europe,26900,75.9,9690000
+Palestine,Asia,2700,72.2,5050000
+Malaysia,Asia,27200,75.9,32000000
+Seychelles,Africa,27500,74.2,95200
+Poland,Europe,27700,78.2,38100000
+Tanzania,Africa,2780,65.5,59100000
+Portugal,Europe,27900,81.3,10300000
+Papua New Guinea,Australia,2800,61.1,8420000
+Vanuatu,Australia,2900,64.3,282000
+Syria,Asia,2900,69.8,18300000
+Tajikistan,Asia,2920,72.2,9110000
+Estonia,Europe,29500,77.7,1310000
+Lesotho,Africa,2960,51.1,2260000
+Trinidad and Tobago,North America,30300,73.4,1370000
+Lithuania,Europe,30400,75.3,2880000
+Slovenia,Europe,30900,81.1,2080000
+Kenya,Africa,3110,67.3,51000000
+Slovak Republic,Europe,31400,77.2,5450000
+Cameroon,Africa,3170,61.2,24700000
+Sao Tome and Principe,Africa,3190,70.9,209000
+Cyprus,Europe,32200,80.8,1190000
+Czech Republic,Europe,32300,79.4,10600000
+Israel,Asia,33400,82.4,8450000
+"Micronesia, Fed. Sts.",Australia,3410,65.8,106000
+Spain,Europe,34700,83.2,46400000
+Kyrgyz Republic,Asia,3490,71.5,6130000
+Italy,Europe,35200,82.6,59300000
+Djibouti,Africa,3540,67.1,971000
+New Zealand,Australia,36400,81.8,4750000
+Mauritania,Africa,3670,70.6,4540000
+South Korea,Asia,36800,81.3,51200000
+Bangladesh,Asia,3720,73.4,166000000
+Cote d'Ivoire,Africa,3760,61.2,24900000
+Malta,Europe,37900,81.8,432000
+Cambodia,Asia,3830,69.3,16200000
+Zambia,Africa,3870,59.5,17600000
+Oman,Asia,38900,78.1,4830000
+France,Europe,39000,82.6,65200000
+Japan,Asia,39100,84.2,127000000
+United Kingdom,Europe,40100,81.2,66600000
+Finland,Europe,40300,82.1,5540000
+Belgium,Europe,42800,81.2,11500000
+Ghana,Africa,4380,66.6,29500000
+Canada,North America,43800,82.2,37000000
+Bahrain,Asia,44300,77.2,1570000
+Sudan,Africa,4440,68.8,41500000
+Austria,Europe,44600,81.8,8750000
+Germany,Europe,45200,81.3,82300000
+Australia,Australia,45800,82.9,24800000
+Honduras,North America,4590,73.1,9420000
+Denmark,Europe,46600,81.1,5750000
+Iceland,Europe,47400,82.6,338000
+Sweden,Europe,47500,82.4,9980000
+Netherlands,Europe,48500,81.9,17100000
+Saudi Arabia,Asia,50100,77.6,33600000
+Pakistan,Asia,5220,68,201000000
+Moldova,Europe,5330,72.4,4040000
+Nicaragua,North America,5470,78.7,6280000
+United States,North America,54900,79.1,327000000
+Tonga,Australia,5500,70.7,109000
+Nigeria,Africa,5570,66.1,196000000
+"Congo, Rep.",Africa,5620,63.9,5400000
+Switzerland,Europe,57100,83.5,8540000
+Angola,Africa,5850,65.2,30800000
+Samoa,Australia,5950,72.4,198000
+Myanmar,Asia,6100,70.3,53900000
+Somalia,Africa,629,58,15200000
+Lao,Asia,6310,67.9,6960000
+Cape Verde,Africa,6420,74.1,553000
+Norway,Europe,64800,82.4,5350000
+Vietnam,Asia,6550,74.9,96500000
+Ireland,Europe,65600,81.5,4800000
+Uzbekistan,Asia,6690,70.5,32400000
+United Arab Emirates,Asia,68200,76.9,9540000
+Kuwait,Asia,68400,80,4200000
+Central African Republic,Africa,689,51.6,4740000
+India,Asia,6890,69.1,1350000000
+Burundi,Africa,691,61.1,11200000
+Bolivia,South America,6980,74,11200000
+"Congo, Dem. Rep.",Africa,751,62.4,84000000
+Guatemala,North America,7530,73.2,17200000
+Swaziland,Africa,7600,58.6,1390000
+Brunei,Asia,76900,77.4,434000
+Belize,North America,7710,72.5,382000
+Morocco,Africa,7720,75.5,36200000
+Guyana,South America,7740,68.2,782000
+Philippines,Asia,7960,70.5,107000000
+Liberia,Africa,801,65.4,4850000
+El Salvador,North America,8290,75.8,6410000
+Ukraine,Europe,8330,72.3,44000000
+Singapore,Asia,83900,84,5790000
+Jordan,Asia,8450,76.7,9900000
+Jamaica,North America,8520,75.2,2900000
+Armenia,Asia,8660,76,2930000
+Paraguay,South America,9280,74.8,6900000
+Fiji,Australia,9420,65.8,912000
+Niger,Africa,949,62.5,22300000
+Luxembourg,Europe,99000,82.4,590000
+Bhutan,Asia,9930,74.8,817000
