@@ -592,12 +592,7 @@ colpal = c(
 
 break_pnts = c(0, 50, 100, 250, 500, 1000, 2000, 4000, 5000, 10000, 25000, 50000, 100000, 125000)
 
-#layout(mat = matrix(data = c(1:2), nrow = 2), heights = c(6, 0.75))
-# 
-# par(mar = c(0, 0, 0, 0), family = "mono")
-# plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
-# text(x = 0, y = 0.8, labels = title_main, cex = 1.1, font = 2, adj = 0)
-# text(x = 0, y = 0.4, labels = title_sub, cex = 0.9, font = 1, adj = 0)
+layout(mat = matrix(data = c(1:2), nrow = 2), heights = c(6, 0.75))
 
 par(mar = c(1, 6, 3, 0.5),  family = "mono")
 image(y = 1:nrow(mat), x = 1:ncol(mat),
@@ -640,9 +635,9 @@ title_sub = "Vaccine introduced in 1963"
 title(main = title_main, adj = 0, cex.main = 0.95, line = 2)
 title(main = title_sub, adj = 0.5, cex.main = 0.8, line = 1, font = 3, adj = 0)
 
-# par(mar = c(0, 0, 0, 0), family = "mono")
-# plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
-# legend(x = "center", legend = break_pnts, col = colpal, pch = 15, ncol = 7, bty = "n", cex = 0.65, title = "no. of cases")
+par(mar = c(0, 0, 0, 0), family = "mono")
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+legend(x = "center", legend = break_pnts, col = colpal, pch = 15, ncol = 7, bty = "n", cex = 0.65, title = "no. of cases, upto")
 ```
 
 
