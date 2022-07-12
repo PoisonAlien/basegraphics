@@ -17,6 +17,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This document demonstrates the usage of base R graphics to generate pretty plots.
 
+Most of the plots are recreated as is from several sources. My gratitude to them for all the hard work and making it accessible/open
+
+  * [datawrapper](https://www.datawrapper.de/charts)
+  * ...
+
 ## Bar plot: Bechdel Test
 
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
@@ -535,6 +540,109 @@ bot_cntrs = data[data$country %in% c("South Africa", "China", "Afghanistan", "Le
 text(x = bot_cntrs$logGDP, y = bot_cntrs$`Life expectancy`, labels = bot_cntrs$country, pos = 1, cex = 0.6, col = "#2c2c54")
 top_cntrs = data[data$country %in% c("Liberia", "Timor-Leste", "Nicaragua", "Costa Rica"),]
 text(x = top_cntrs$logGDP, y = top_cntrs$`Life expectancy`, labels = top_cntrs$country, pos = 3, cex = 0.6, col = "#2c2c54")
+```
+
+## Heatmap: Measles 
+Recreating the popular maeasles vaccine heatmap from [WSJ](https://graphics.wsj.com/infectious-diseases-and-vaccines/) 
+
+acknowledgments: 
+
+* Initial attempt in R by Mick Watson in base R [using heatmp and gplots](https://twitter.com/BioMickWatson/status/586131293735358465?s=20&t=hpj0heP5sP80LI98H3zS2w)
+* [ggplot version](https://benjaminlmoore.wordpress.com/2015/04/09/recreating-the-vaccination-heatmaps-in-r/)
+* [ComplexHeatmap by Zuguang Gu](https://jokergoo.github.io/ComplexHeatmap-reference/book/more-examples.html#the-measles-vaccine-heatmap) 
+
+Raw data matrix obtained as a part of `ComplexHeatmap` package. 
+
+NOTE: Counts are raw and not normalized for per 100K as in original WSJ plot. Color grading are according to the breaks in the number of cases rather than being continuous.
+
+
+```{r}
+mat = readRDS(system.file("extdata", "measles.rds", package = "ComplexHeatmap"))
+#Get rid of some of the entries
+rem_states = c(
+  "AMERICAN.SAMOA",
+  "GUAM",
+  "NEW.YORK.CITY",
+  "NORTHERN.MARIANA.ISLANDS",
+  "PAC.TRUST.TERR",
+  "PUERTO.RICO",
+  "RHODE.ISLAND",
+  "UPSTATE.NEW.YORK",
+  "VIRGIN.ISLANDS"
+)
+
+#Since image() flips the data, sort it before plotting
+us_stats = sort(setdiff(x = rownames(mat), rem_states), decreasing = TRUE)
+mat = mat[us_stats,]
+
+colpal = c(
+  "white", "#ecf0f1",
+  "#e7f0fa",
+  "#c9e2f6",
+  "#95cbee",
+  "#0099dc",
+  "#4ab04a",
+  "#ffd73e",
+  "#eec73a",
+  "#e29421",
+  "#e29421",
+  "#f05336",
+  "#ce472e"
+)
+
+break_pnts = c(0, 50, 100, 250, 500, 1000, 2000, 4000, 5000, 10000, 25000, 50000, 100000, 125000)
+
+#layout(mat = matrix(data = c(1:2), nrow = 2), heights = c(6, 0.75))
+# 
+# par(mar = c(0, 0, 0, 0), family = "mono")
+# plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+# text(x = 0, y = 0.8, labels = title_main, cex = 1.1, font = 2, adj = 0)
+# text(x = 0, y = 0.4, labels = title_sub, cex = 0.9, font = 1, adj = 0)
+
+par(mar = c(1, 6, 3, 0.5),  family = "mono")
+image(y = 1:nrow(mat), x = 1:ncol(mat),
+  z = t(mat),
+  axes = FALSE,
+  xaxt = "n",
+  yaxt = "n",
+  xlab = "",
+  ylab = "", col = colpal, breaks = break_pnts
+)
+#
+#contour(t(mat), add = TRUE, drawlabels = FALSE)
+
+abline(h = (1:nrow(mat)) + 0.5, v = (1:ncol(mat)) + 0.5, col = "white")
+
+mtext(
+  text = colnames(t(mat)),
+  side = 2,
+  at = 1:nrow(mat),
+  font = 2,
+  line = 0.4,
+  las = 2,
+  cex = 0.5,
+  col = "#34495e"
+)
+
+vac_idx = which(colnames(x = mat) == "1963")
+abline(v = vac_idx-0.5, col = "black", lwd = 1.2)
+
+
+lab_at = seq(1930, 2000, 10)
+for(lab in lab_at){
+  lab_idx = which(colnames(mat) == lab)
+  axis(side = 1, at = lab_idx, labels = lab, col.axis = "#34495e", tick = F, line = -1, cex.axis = 0.6, gap.axis = 0.1, xpd = TRUE)
+}
+
+title_main = "Impact of vacccines on Measles in the US states (1930-2001)"
+title_sub = "Vaccine introduced in 1963"
+
+title(main = title_main, adj = 0, cex.main = 0.95, line = 2)
+title(main = title_sub, adj = 0.5, cex.main = 0.8, line = 1, font = 3, adj = 0)
+
+# par(mar = c(0, 0, 0, 0), family = "mono")
+# plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+# legend(x = "center", legend = break_pnts, col = colpal, pch = 15, ncol = 7, bty = "n", cex = 0.65, title = "no. of cases")
 ```
 
 
