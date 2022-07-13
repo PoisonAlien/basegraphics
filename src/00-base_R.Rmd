@@ -22,6 +22,9 @@ Most of the plots are recreated as is from several sources. My gratitude to them
   * [datawrapper](https://www.datawrapper.de/charts)
   * ...
 
+
+I apologize for the uncommentated code :|
+
 ## Bar plot: Bechdel Test
 
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
@@ -385,11 +388,6 @@ Number of COVID19 articles in arxiv preprints
 
 Data obtained from [biorxiv API](https://api.biorxiv.org/covid19/)
 ```{r}
-# Pretty Line chart in base R
-# MIT License
-# Copyright (c) 2022 Anand Mayakonda <anandmt3@gmail.com>
-# Visualizing COVID-19 biorxiv/medrxiv articles
-
 arxiv_data = read.delim(file = "../data/05-linechart_COVIDrxiv.tsv")
 arxiv_data$rel_date = as.Date.character(arxiv_data$rel_date)
 date_lvls = seq.Date(as.Date(arxiv_data[1,"rel_date"]), as.Date(arxiv_data[nrow(arxiv_data),"rel_date"]), 1)
@@ -640,6 +638,95 @@ plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab 
 legend(x = "center", legend = break_pnts, col = colpal, pch = 15, ncol = 7, bty = "n", cex = 0.65, title = "no. of cases, upto")
 ```
 
+## Parliament plot: German Bundestag
+
+Data source: https://www.tatsachen-ueber-deutschland.de/en/politics-germany/parliament-parties
+
+Acknowledgments: https://www.datawrapper.de/charts
+
+```{r}
+nseats = 736
+nrows = 14
+
+seat_distr = c(4, 80, 45, 152, 92, 118, 206, 39)
+names(seat_distr) = c("Independent", "AfD", "CSU", "CDU", "FDP", "The Greens", "SPD", "The Left")
+
+seat_cols = c("#7f8c8d", "#f368e0", "#2980b9", "#2c3e50", "#D6A2E8", "#27ae60", "#d35400", "#8e44ad")
+names(seat_cols) = names(seat_distr)
+
+#Simple estimate for how many seats (dots) in concentric arcs
+n_seats_per_row = ((pi * nrows:1)/sum(pi * nrows:1)) * nseats
+n_seats_per_row = ceiling(n_seats_per_row)
+
+x <- seq(0, pi, length.out = n_seats_per_row[1])
+xlims = range(cos(x) * nrows)
+ylims = range(sin(x) * nrows)
+ylims = c(-max(ylims), max(ylims))
+
+plot_data = data.frame()
+for(i in nrows:1){
+  x <- seq(0, pi, length.out = rev(n_seats_per_row)[i])
+  plot_data = rbind(plot_data, data.frame(cos(x) * i, sin(x) * i, i))
+}
+
+colnames(plot_data) = c("x", "y", "row")
+plot_data = plot_data[1:nseats,]
+
+#--Comment out the below section to avoid spiral ordering
+plot_data_spl = split(plot_data, ~row)
+max_row = max(unlist(lapply(plot_data_spl, nrow)))
+data_ordered = data.frame()
+for(i in seq_len(max_row)){
+  data_i = lapply(plot_data_spl, function(dat){
+    dat[i,]
+  })
+  data_i = do.call("rbind", data_i)
+  data_ordered = rbind(data_ordered, data_i)
+}
+#plot_data = data_ordered[!is.na(data_ordered$x),]
+#--
+
+plot_data$party = rep(x = names(seat_distr), seat_distr)
+
+layout(mat = matrix(data = c(1:3), nrow = 3), heights = c(1, 6, 0.75))
+par(family = "mono")
+par(mar = c(0, 0, 1, 0))
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+title_main = "The 20th Bundestag"
+title_main2 = "Parliament & Parties of the German Bundestag"
+title_sub = "736 members of parliament are represented"
+
+title(main = title_main, cex.main = 1.8, line = -0.5, family = "Helvetica", col.main = "#2C3A47")
+title(main = title_main2, cex.main = 1.5, line = -2, family = "Helvetica", col.main = "#2C3A47")
+title(main = title_sub, cex.main = 1.2, font = 3, line = -3.25,family = "Helvetica", col.main = "#2C3A47")
+
+par(mar = c(0.75, 0, 0.75, 0))
+plot(NA, xlim = xlims, ylim = ylims , "", asp = 1,  xlab = NA, ylab = NA, frame.plot = FALSE, axes = FALSE)
+points(x = plot_data$x, y = plot_data$y, pch = 19, col = seat_cols[plot_data$party], cex = 0.65)
+
+x <- seq(0, pi, length.out = 500)
+
+#Outer ring
+points(cos(x) * (nrows+0.5), sin(x) * (nrows+0.5), type = "l", lwd = 3, col = "#ea8685")
+points(cos(x) * -(nrows+0.5), sin(x) * -(nrows+0.5), type = "l", lwd = 3, col = "#ea8685")
+#Outer ring 2
+rng_col2 = adjustcolor("#ea8685", 0.4)
+points(cos(x) * (nrows+1), sin(x) * (nrows+1), type = "l", lwd = 3, col = rng_col2)
+points(cos(x) * -(nrows+1), sin(x) * -(nrows+1), type = "l", lwd = 3, col = rng_col2)
+
+text(x = 0, -8, label = "736\nSEATS", font = 2, col  = "#34495e", cex = 2.5)
+
+par(mar = c(0, 0, 0, 0), family = "Helvetica")
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+legend(
+  x = "bottom",
+  legend = paste0(names(seat_distr), " (", seat_distr, ")"),
+  ncol = 4,
+  text.col = seat_cols,
+  bty = "n", xpd = TRUE, cex = 1, text.font = 2
+)
+
+```
 
 ## Session Information
 
