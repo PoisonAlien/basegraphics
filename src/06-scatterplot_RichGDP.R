@@ -4,7 +4,7 @@
 # Recreating scatter plot from https://www.datawrapper.de/charts/
 
 #data = read.table("06-scatterplot_data.csv", sep = ",", header = TRUE)
-data = data.table::fread(input = "../data/06-scatterplot_data.csv", data.table = FALSE)
+data = data.table::fread(input = "../data/06-scatterplot_RichGDP.csv", data.table = FALSE)
 
 data$population = as.numeric(data$population)
 #data$bub_size = data$population/max(data$population, na.rm = TRUE)
