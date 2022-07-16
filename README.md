@@ -2,7 +2,7 @@
 
 Do you like Data Visualization and `#Rstats`? 
 
-Base graphics in R is extremely powerful, blazing fast, and offers extremely customization data visualization solutions. Unfortunately, in the world of ggplot2, base graphics is largely ignored due to lack proper documentations and howtos.
+Base graphics in R is a powerful, blazing fast, and offers extremely customization data visualization solutions. Unfortunately, in the world of `ggplot2`, base graphics is largely ignored due to lack proper documentations and howtos.
 
 This repository demonstrates the usage of base R graphics (along with code and datasets) to generate visually appealing plots, without any dependencies what so ever.
 
@@ -11,7 +11,7 @@ This repository is for those who like to learn and customize base R plotting fun
 ## Results
 
 * [Home page](https://poisonalien.github.io/basegraphics/index.html) 
-* [Code and plots](https://htmlpreview.github.io/?https://github.com/PoisonAlien/basegraphics/blob/main/src/00-base_R.html)
+* [Code and plots](https://poisonalien.github.io/basegraphics/baseplots.html)
 
 ## Data and code
 
