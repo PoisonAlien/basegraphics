@@ -1,0 +1,1581 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Anand Mayakonda" />
+
+
+<title>Pretty base plots</title>
+
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.tab('show');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">basegraphics</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Pretty base plots</h1>
+<h4 class="author">Anand Mayakonda</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
+workflowr <span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2022-07-16
+</p>
+<p>
+<strong>Checks:</strong> <span
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> 0
+</p>
+<p>
+<strong>Knit directory:</strong> <code>basegraphics/</code> <span
+class="glyphicon glyphicon-question-sign" aria-hidden="true"
+title="This is the local directory in which the code in this file was executed.">
+</span>
+</p>
+<p>
+This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
+analysis was created with <a
+  href="https://github.com/workflowr/workflowr">workflowr</a> (version
+1.7.0). The <em>Checks</em> tab describes the reproducibility checks
+that were applied when the results were created. The <em>Past
+versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20220715code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20220715)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20220715code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20220715)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree4cd02d0664fe6b4b6bc5b63f396006ca329e0753targetblank4cd02d0a">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/PoisonAlien/basegraphics/tree/4cd02d0664fe6b4b6bc5b63f396006ca329e0753" target="_blank">4cd02d0</a>
+</a>
+</p>
+</div>
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree4cd02d0664fe6b4b6bc5b63f396006ca329e0753targetblank4cd02d0a"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development
+and connecting the code version to the results is critical for
+reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version
+<a href="https://github.com/PoisonAlien/basegraphics/tree/4cd02d0664fe6b4b6bc5b63f396006ca329e0753" target="_blank">4cd02d0</a>.
+See the <em>Past versions</em> tab to see a history of the changes made
+to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for
+the analysis have been committed to Git prior to generating the results
+(you can use <code>wflow_publish</code> or
+<code>wflow_git_commit</code>). workflowr only checks the R Markdown
+file, but you know if there are other scripts or data files that it
+depends on. Below is the status of the Git repository when the results
+were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    .DS_Store
+    Ignored:    .Rhistory
+    Ignored:    .Rproj.user/
+    Ignored:    code/.DS_Store
+
+Untracked files:
+    Untracked:  .Rbuildignore
+    Untracked:  LICENSE.md
+    Untracked:  code/01-animate_covid-biorxiv.R
+    Untracked:  code/01-barplot_BechdelTest.R
+    Untracked:  code/02-splitbarplot_PopGermany.R
+    Untracked:  code/03-dotplot_OldestCountry.R
+    Untracked:  code/04-arrowplot_WomenInParliment.R
+    Untracked:  code/05-linechart_COVIDrXiv.R
+    Untracked:  code/05-linechart_CigConsumption.R
+    Untracked:  code/06-scatterplot_RichGDP.R
+    Untracked:  code/07-areachart_USmigration.R
+    Untracked:  code/08-donutplot_TopWealth.R
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not
+included in this status report because it is ok for generated content to
+have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/baseplots.Rmd</code>) and HTML
+(<code>docs/baseplots.html</code>) files. If you’ve configured a remote
+Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4cd02d0664fe6b4b6bc5b63f396006ca329e0753/analysis/baseplots.Rmd" target="_blank">4cd02d0</a>
+</td>
+<td>
+PoisonAlien
+</td>
+<td>
+2022-07-16
+</td>
+<td>
+workflowr
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This document demonstrates the usage of base <code>R</code> graphics
+to generate visually appealing plots, without any dependencies.</p>
+<p>Most of the plots are recreated as is from several sources. My
+gratitude to them for all the hard work and making it
+accessible/open</p>
+<p>Acknowledgments:</p>
+<ul>
+<li><a href="https://www.datawrapper.de/charts">datawrapper</a></li>
+<li>…</li>
+</ul>
+<p>Finally, I apologize in advance for the uncommentated code. Lets
+go..</p>
+</div>
+<div id="area-chart-us-migration" class="section level2">
+<h2>Area chart: US migration</h2>
+<p><a
+href="https://app.datawrapper.de/chart/wsfqj/visualize#refine">Data
+source</a></p>
+<pre class="r"><code>data = read.table(file = &quot;data/07-areachart_USmigration.csv&quot;, header = TRUE, sep = &quot;,&quot;)
+
+#Maximum
+max_pop = max(rowSums(data[,2:ncol(data)]))
+
+layout(mat = matrix(data = c(1:2), nrow = 2), heights = c(0.75, 6))
+
+par(family = &quot;mono&quot;)
+par(mar = c(0, 0, 0, 0))
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+title_main = &quot;Migration to the US by world region, 1820-2009&quot;
+title_main2 = &quot;The numbers are recorded by decade\nFor example, the numbers recorded for 1905 tell us the number of immigrants between 1900 and 1910.&quot;
+
+title(main = title_main, cex.main = 1, line = -1, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;, adj = 0)
+title(main = title_main2, cex.main = .75, line = -2.5, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;, adj = 0, font.main = 1)
+
+
+par(mar = c(1, 1, 1, 3))
+plot(
+  NA,
+  xlim = range(data$Region.and.country.of.last.residence.1),
+  ylim = c(0, max_pop),
+  xlab = NA,
+  ylab = NA,
+  frame.plot = FALSE,
+  axes = FALSE
+)
+
+abline(h = pretty(c(0, max_pop)), col = &quot;gray90&quot;)
+axis(side = 4, at = pretty(c(0, max_pop)), labels = paste0(seq(0, 12, 2), &quot;M&quot;), las = 2, tick = FALSE, line = .1, col.axis = &quot;#34495e&quot;, cex.axis = 0.8)
+axis(side = 1, at = seq(1820, 2000, 10), tick = FALSE, cex.axis = 0.8, col.axis = &quot;#34495e&quot;, line = -1.5)
+
+rect(xleft = 1914, ybottom = 0, xright = 1918, ytop = max_pop, col = &quot;#95a5a6&quot;, border = NA)
+text(x = 1916, y = max_pop, labels = &quot;WW1&quot;, cex = 0.75, pos = 3, xpd = TRUE, font = 4, adj = 1)
+rect(xleft = 1939, ybottom = 0, xright = 1945, ytop = max_pop, col = &quot;#95a5a6&quot;, border = NA)
+text(x = 1942, y = max_pop, labels = &quot;WW2&quot;, cex = 0.75, pos = 3, xpd = TRUE, font = 4, adj = 1)
+
+cols = c(&quot;white&quot;, &quot;#1d81a2&quot;, &quot;#004765&quot;, &quot;#3a96b8&quot;, &quot;#48adc0&quot;, &quot;#329a9b&quot;, &quot;#2b8589&quot;, 
+         &quot;#257085&quot;, &quot;#005d71&quot;, 
+         &quot;#b4241c&quot;, &quot;#cd3d2e&quot;, &quot;#dc464b&quot;, &quot;#e65340&quot;, 
+         &quot;#ffa126&quot;, &quot;#ffca76&quot;, &quot;#ffe59c&quot;, &quot;#fffbb1&quot;, &quot;#ffdc6b&quot;, &quot;#ffbb7f&quot;, 
+         &quot;#009a69&quot;, &quot;#003f65&quot;, &quot;#181818&quot;, &quot;black&quot;)
+#cols = adjustcolor(col = cols, alpha.f = 0.7)
+
+for(i in 22:2){
+  if(i &gt; 2){
+    polygon(
+      c(
+        data[1, &quot;Region.and.country.of.last.residence.1&quot;],
+        data$Region.and.country.of.last.residence.1,
+        data[nrow(data), &quot;Region.and.country.of.last.residence.1&quot;]
+      ),
+      c(0, rowSums(data[, 2:i, drop = FALSE]), 0),
+      col = cols[i], border = cols[i]
+    )
+    
+  }else{
+    polygon(data$Region.and.country.of.last.residence.1,
+            data[,i],
+            col = cols[i],  border = cols[i])
+  }
+}
+
+to_hghlt = c(&quot;Germany&quot;, &quot;United.Kingdom&quot;, &quot;Austria.Hungary&quot;,&quot;Ireland&quot;, &quot;Philippines&quot;, &quot;Italy&quot;, &quot;Russia&quot;, &quot;India&quot;, &quot;China&quot;, &quot;Mexico&quot;, &quot;Central.America&quot;)
+
+for(h in to_hghlt){
+  i = which(colnames(data) == h)
+  max_idx = which(data[,i] == max(data[,i]))
+  y_point = data[,i] + rowSums(data[,2:(i-1), drop = FALSE])
+  text(x = data[max_idx,1], y = y_point[max_idx], labels = colnames(data)[i], cex = 0.55, xpd = TRUE, font = 2, family = &quot;mono&quot;, col = &quot;#192a56&quot;)
+}
+
+text(x = 1900, y = 1e6, label = &quot;EUROPE&quot;, col = &quot;white&quot;, cex = 1.2, font = 2)
+text(x = 1990, y = 2e6, label = &quot;ASIA&quot;, col = &quot;white&quot;, cex = 1.2, adj = 0.8, font = 2)
+text(x = 1990, y = 6e6, label = &quot;AMERICA&quot;, col = &quot;#2c3e50&quot;, cex = 1.2, adj = 0.7, font = 2)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="parliament-plot-german-bundestag" class="section level2">
+<h2>Parliament plot: German Bundestag</h2>
+<p>Data source: <a
+href="https://www.tatsachen-ueber-deutschland.de/en/politics-germany/parliament-parties"
+class="uri">https://www.tatsachen-ueber-deutschland.de/en/politics-germany/parliament-parties</a></p>
+<p>Acknowledgments: <a href="https://www.datawrapper.de/charts"
+class="uri">https://www.datawrapper.de/charts</a></p>
+<pre class="r"><code>nseats = 736
+nrows = 14
+
+seat_distr = c(4, 80, 45, 152, 92, 118, 206, 39)
+names(seat_distr) = c(&quot;Independent&quot;, &quot;AfD&quot;, &quot;CSU&quot;, &quot;CDU&quot;, &quot;FDP&quot;, &quot;The Greens&quot;, &quot;SPD&quot;, &quot;The Left&quot;)
+
+seat_cols = c(&quot;#7f8c8d&quot;, &quot;#f368e0&quot;, &quot;#2980b9&quot;, &quot;#2c3e50&quot;, &quot;#D6A2E8&quot;, &quot;#27ae60&quot;, &quot;#d35400&quot;, &quot;#8e44ad&quot;)
+names(seat_cols) = names(seat_distr)
+
+#Simple estimate for how many seats (dots) in concentric arcs
+n_seats_per_row = ((pi * nrows:1)/sum(pi * nrows:1)) * nseats
+n_seats_per_row = ceiling(n_seats_per_row)
+
+x &lt;- seq(0, pi, length.out = n_seats_per_row[1])
+xlims = range(cos(x) * nrows)
+ylims = range(sin(x) * nrows)
+ylims = c(-max(ylims), max(ylims))
+
+plot_data = data.frame()
+for(i in nrows:1){
+  x &lt;- seq(0, pi, length.out = rev(n_seats_per_row)[i])
+  plot_data = rbind(plot_data, data.frame(cos(x) * i, sin(x) * i, i))
+}
+
+colnames(plot_data) = c(&quot;x&quot;, &quot;y&quot;, &quot;row&quot;)
+plot_data = plot_data[1:nseats,]
+
+#--Comment out the below section to avoid spiral ordering
+plot_data_spl = split(plot_data, ~row)
+max_row = max(unlist(lapply(plot_data_spl, nrow)))
+data_ordered = data.frame()
+for(i in seq_len(max_row)){
+  data_i = lapply(plot_data_spl, function(dat){
+    dat[i,]
+  })
+  data_i = do.call(&quot;rbind&quot;, data_i)
+  data_ordered = rbind(data_ordered, data_i)
+}
+#plot_data = data_ordered[!is.na(data_ordered$x),]
+#--
+
+plot_data$party = rep(x = names(seat_distr), seat_distr)
+
+layout(mat = matrix(data = c(1:3), nrow = 3), heights = c(1, 6, 0.75))
+par(family = &quot;mono&quot;)
+par(mar = c(0, 0, 1, 0))
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+title_main = &quot;The 20th Bundestag&quot;
+title_main2 = &quot;Parliament &amp; Parties of the German Bundestag&quot;
+title_sub = &quot;736 members of parliament are represented&quot;
+
+title(main = title_main, cex.main = 1.8, line = -0.5, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)
+title(main = title_main2, cex.main = 1.5, line = -2, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)
+title(main = title_sub, cex.main = 1.2, font = 3, line = -3.25,family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)
+
+par(mar = c(0.75, 0, 0.75, 0))
+plot(NA, xlim = xlims, ylim = ylims , &quot;&quot;, asp = 1,  xlab = NA, ylab = NA, frame.plot = FALSE, axes = FALSE)
+points(x = plot_data$x, y = plot_data$y, pch = 19, col = seat_cols[plot_data$party], cex = 0.65)
+
+x &lt;- seq(0, pi, length.out = 500)
+
+#Outer ring
+points(cos(x) * (nrows+0.5), sin(x) * (nrows+0.5), type = &quot;l&quot;, lwd = 3, col = &quot;#ea8685&quot;)
+points(cos(x) * -(nrows+0.5), sin(x) * -(nrows+0.5), type = &quot;l&quot;, lwd = 3, col = &quot;#ea8685&quot;)
+#Outer ring 2
+rng_col2 = adjustcolor(&quot;#ea8685&quot;, 0.4)
+points(cos(x) * (nrows+1), sin(x) * (nrows+1), type = &quot;l&quot;, lwd = 3, col = rng_col2)
+points(cos(x) * -(nrows+1), sin(x) * -(nrows+1), type = &quot;l&quot;, lwd = 3, col = rng_col2)
+
+text(x = 0, -8, label = &quot;736\nSEATS&quot;, font = 2, col  = &quot;#34495e&quot;, cex = 2.5)
+
+par(mar = c(0, 0, 0, 0), family = &quot;Helvetica&quot;)
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+legend(
+  x = &quot;bottom&quot;,
+  legend = paste0(names(seat_distr), &quot; (&quot;, seat_distr, &quot;)&quot;),
+  ncol = 4,
+  text.col = seat_cols,
+  bty = &quot;n&quot;, xpd = TRUE, cex = 1, text.font = 2
+)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="heatmap-measles" class="section level2">
+<h2>Heatmap: Measles</h2>
+<p>Recreating the popular maeasles vaccine heatmap from <a
+href="https://graphics.wsj.com/infectious-diseases-and-vaccines/">WSJ</a></p>
+<p>acknowledgments:</p>
+<ul>
+<li>Initial attempt in R by Mick Watson in base R <a
+href="https://twitter.com/BioMickWatson/status/586131293735358465?s=20&amp;t=hpj0heP5sP80LI98H3zS2w">using
+heatmp and gplots</a></li>
+<li><a
+href="https://benjaminlmoore.wordpress.com/2015/04/09/recreating-the-vaccination-heatmaps-in-r/">ggplot
+version</a></li>
+<li><a
+href="https://jokergoo.github.io/ComplexHeatmap-reference/book/more-examples.html#the-measles-vaccine-heatmap">ComplexHeatmap
+by Zuguang Gu</a></li>
+</ul>
+<p>Raw data matrix obtained as a part of <code>ComplexHeatmap</code>
+package.</p>
+<p>NOTE: Counts are raw and not normalized for per 100K as in original
+WSJ plot. Color grading are according to the breaks in the number of
+cases rather than being continuous.</p>
+<pre class="r"><code>mat = readRDS(system.file(&quot;extdata&quot;, &quot;measles.rds&quot;, package = &quot;ComplexHeatmap&quot;))
+#Get rid of some of the entries
+rem_states = c(
+  &quot;AMERICAN.SAMOA&quot;,
+  &quot;GUAM&quot;,
+  &quot;NEW.YORK.CITY&quot;,
+  &quot;NORTHERN.MARIANA.ISLANDS&quot;,
+  &quot;PAC.TRUST.TERR&quot;,
+  &quot;PUERTO.RICO&quot;,
+  &quot;RHODE.ISLAND&quot;,
+  &quot;UPSTATE.NEW.YORK&quot;,
+  &quot;VIRGIN.ISLANDS&quot;
+)
+
+#Since image() flips the data, sort it before plotting
+us_stats = sort(setdiff(x = rownames(mat), rem_states), decreasing = TRUE)
+mat = mat[us_stats,]
+
+colpal = c(
+  &quot;white&quot;, &quot;#ecf0f1&quot;,
+  &quot;#e7f0fa&quot;,
+  &quot;#c9e2f6&quot;,
+  &quot;#95cbee&quot;,
+  &quot;#0099dc&quot;,
+  &quot;#4ab04a&quot;,
+  &quot;#ffd73e&quot;,
+  &quot;#eec73a&quot;,
+  &quot;#e29421&quot;,
+  &quot;#e29421&quot;,
+  &quot;#f05336&quot;,
+  &quot;#ce472e&quot;
+)
+
+break_pnts = c(0, 50, 100, 250, 500, 1000, 2000, 4000, 5000, 10000, 25000, 50000, 100000, 125000)
+
+layout(mat = matrix(data = c(1:2), nrow = 2), heights = c(6, 0.75))
+
+par(mar = c(1, 6, 3, 0.5),  family = &quot;mono&quot;)
+image(y = 1:nrow(mat), x = 1:ncol(mat),
+  z = t(mat),
+  axes = FALSE,
+  xaxt = &quot;n&quot;,
+  yaxt = &quot;n&quot;,
+  xlab = &quot;&quot;,
+  ylab = &quot;&quot;, col = colpal, breaks = break_pnts
+)
+#
+#contour(t(mat), add = TRUE, drawlabels = FALSE)
+
+abline(h = (1:nrow(mat)) + 0.5, v = (1:ncol(mat)) + 0.5, col = &quot;white&quot;)
+
+mtext(
+  text = colnames(t(mat)),
+  side = 2,
+  at = 1:nrow(mat),
+  font = 2,
+  line = 0.4,
+  las = 2,
+  cex = 0.5,
+  col = &quot;#34495e&quot;
+)
+
+vac_idx = which(colnames(x = mat) == &quot;1963&quot;)
+abline(v = vac_idx-0.5, col = &quot;black&quot;, lwd = 1.2)
+
+
+lab_at = seq(1930, 2000, 10)
+for(lab in lab_at){
+  lab_idx = which(colnames(mat) == lab)
+  axis(side = 1, at = lab_idx, labels = lab, col.axis = &quot;#34495e&quot;, tick = F, line = -1, cex.axis = 0.6, gap.axis = 0.1, xpd = TRUE)
+}
+
+title_main = &quot;Impact of vacccines on Measles in the US states (1930-2001)&quot;
+title_sub = &quot;Vaccine introduced in 1963&quot;
+
+title(main = title_main, adj = 0, cex.main = 0.95, line = 2)
+title(main = title_sub, adj = 0.5, cex.main = 0.8, line = 1, font = 3, adj = 0)
+
+par(mar = c(0, 0, 0, 0), family = &quot;mono&quot;)
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+legend(x = &quot;center&quot;, legend = break_pnts, col = colpal, pch = 15, ncol = 7, bty = &quot;n&quot;, cex = 0.65, title = &quot;no. of cases, upto&quot;)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="bubble-charts-rich-vs-health" class="section level2">
+<h2>Bubble charts: Rich vs Health</h2>
+<p>Data obtained from <a
+href="https://www.datawrapper.de/charts">datawrapper</a>.</p>
+<pre class="r"><code>data = data.table::fread(input = &quot;data/06-scatterplot_RichGDP.csv&quot;, data.table = FALSE)
+
+data$population = as.numeric(data$population)
+#data$bub_size = data$population/max(data$population, na.rm = TRUE)
+cols = c(&quot;#34495e&quot;, &quot;#ff5252&quot;, &quot;#34ace0&quot;, &quot;#ffb142&quot;, &quot;#218c74&quot;, &quot;#84817a&quot;)
+cols = adjustcolor(col = cols, alpha.f = 0.6)
+names(cols) = names(table(data$regions))
+
+title_main = &quot;The richer, the healthier&quot;
+title_sub = &quot;GDP per person adjusted for differences in purchasing power (in 2011 international dollars) and life expectancy in years for selected countries, 2018.\nThe bigger a circle, the more people live in a country.&quot;
+
+layout(mat = matrix(data = c(1:2), nrow = 2), heights = c(2, 6))
+
+par(mar = c(0, 0, 0, 0))
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+text(x = 0, y = 0.8, labels = title_main, cex = 1, font = 2, adj = 0)
+text(x = 0, y = 0.6, labels = title_sub, cex = 0.6, font = 3, adj = 0)
+
+legend(x = .1, y = 0.4, legend = names(cols), col = cols, pch = 19, ncol = 3, bty = &quot;n&quot;, cex = 0.7)
+
+data$logGDP = log10(data$`GDP per capita`)
+
+par(mar = c(2, 2, 0, 1))
+plot(NA, xlim = range(pretty(data$logGDP)), ylim = c(50, 90), xlab = NA, ylab = NA, frame.plot = FALSE, axes = FALSE)
+axl_lb = round(10^pretty(data$logGDP))
+axl_lb = ifelse(test = axl_lb &gt; 1000, yes = paste0(round(axl_lb/1000), &quot;k&quot;), no = round(axl_lb))
+
+axis(side = 1, at = pretty(data$logGDP), labels = axl_lb, col.axis = &quot;#7f8c8d&quot;, tick = FALSE, col = &quot;gray&quot;, cex.axis = 0.8, line = -.5)
+axis(side = 2, at = seq(50, 100, 10), col.axis = &quot;#7f8c8d&quot;, tick = FALSE, col = &quot;gray&quot;, cex.axis = 0.8, las = 2, line = -0.5)
+abline(h = seq(50, 100, 10), v = pretty(data$logGDP), col = &quot;gray90&quot;)
+
+text(x = rev(pretty(data$logGDP))[1], y = 50, labels = &quot;GDP per capita&quot;, col = &quot;#34495e&quot;, adj = 1, cex = 0.7, font = 2)
+text(x = pretty(data$logGDP)[1], y = 90, labels = &quot;Life Expectancy&quot;, col = &quot;#34495e&quot;, adj = 0, cex = 0.7, font = 2)
+
+symbols(
+  x = data$logGDP,
+  y = data$`Life expectancy`,
+  circles  = sqrt(data$population / pi),
+  inches = 0.18, add = TRUE, bg = cols[data$regions], fg = cols[data$regions]
+)
+
+bot_cntrs = data[data$country %in% c(&quot;South Africa&quot;, &quot;China&quot;, &quot;Afghanistan&quot;, &quot;Lesotho&quot;, &quot;United Arab Emirates&quot;),]
+text(x = bot_cntrs$logGDP, y = bot_cntrs$`Life expectancy`, labels = bot_cntrs$country, pos = 1, cex = 0.6, col = &quot;#2c2c54&quot;)
+top_cntrs = data[data$country %in% c(&quot;Liberia&quot;, &quot;Timor-Leste&quot;, &quot;Nicaragua&quot;, &quot;Costa Rica&quot;),]
+text(x = top_cntrs$logGDP, y = top_cntrs$`Life expectancy`, labels = top_cntrs$country, pos = 3, cex = 0.6, col = &quot;#2c2c54&quot;)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="donut-charts-wealthiset-percentage" class="section level2">
+<h2>Donut charts: Wealthiset percentage</h2>
+<p>Data obtained from <a
+href="https://www.datawrapper.de/charts">datawrapper</a>.</p>
+<pre class="r"><code>data = read.table(&quot;data/08-donutplot_TopWealth.csv&quot;, sep = &quot;,&quot;, header = TRUE)</code></pre>
+<pre><code>Warning in read.table(&quot;data/08-donutplot_TopWealth.csv&quot;, sep = &quot;,&quot;, header
+= TRUE): incomplete final line found by readTableHeader on &#39;data/08-
+donutplot_TopWealth.csv&#39;</code></pre>
+<pre class="r"><code>lo =layout(mat = matrix(data = c(1, 1, 1, 2:7), nrow = 3, ncol = 3, byrow = TRUE), heights = c(1.7, 3, 3))
+
+par(mar = c(0, 0, 0, 0))
+title_main = &quot;Who gets which slice of the pie?&quot;
+title_sub = &quot;How much of the wealth of a country do the poorest 50% own?\nHow much do the top 10% own?&quot;
+
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+text(x = 0, y = 0.9, labels = title_main, cex = 1.5, font = 2, adj = 0)
+text(x = 0, y = 0.6, labels = title_sub, cex = 1.2, font = 3, adj = 0)
+legend(x = .1, y = 0.4, legend = c(&quot;bottom 50%&quot;, &quot;next 40%&quot;, &quot;top 10%&quot;), col = c(&quot;#b33939&quot;, &quot;#f7f1e3&quot;, &quot;#40407a&quot;), pch = 15, ncol = 3, bty = &quot;n&quot;, cex = 1.4)
+
+par(mar = c(2, 2, 2, 2))
+
+for (i in 2:ncol(data)) {
+  pie(
+    data[, i],
+    radius = 1,
+    clockwise = TRUE,
+    labels = paste0(round(data[, i]), &quot;%&quot;), border = &quot;white&quot;, 
+    col = c(&quot;#b33939&quot;, &quot;#f7f1e3&quot;, &quot;#40407a&quot;)
+  )
+  points(x = 0, y = 0, pch = 19, cex = 10, col = &quot;white&quot;, lwd = 0)
+  title(main = colnames(data)[i], adj = 0)
+}</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="line-chart-covid19-preprints" class="section level2">
+<h2>Line chart: COVID19 preprints</h2>
+<p>Number of COVID19 articles in arxiv preprints</p>
+<p>Data obtained from <a href="https://api.biorxiv.org/covid19/">biorxiv
+API</a></p>
+<pre class="r"><code>arxiv_data = read.delim(file = &quot;data/05-linechart_COVIDrxiv.tsv&quot;)
+arxiv_data$rel_date = as.Date.character(arxiv_data$rel_date)
+date_lvls = seq.Date(as.Date(arxiv_data[1,&quot;rel_date&quot;]), as.Date(arxiv_data[nrow(arxiv_data),&quot;rel_date&quot;]), 1)
+arxiv_data$date = factor(x = arxiv_data$rel_date, levels = as.character.Date(date_lvls), ordered = TRUE )
+
+biorxiv = data.frame(n_articles = unlist(lapply(split(arxiv_data[arxiv_data$rel_site %in% &quot;bioRxiv&quot;,], ~date), nrow)))
+medrxiv = data.frame(n_articles = unlist(lapply(split(arxiv_data[arxiv_data$rel_site %in% &quot;medRxiv&quot;,], ~date), nrow)))
+
+data = merge(biorxiv, medrxiv, by = &quot;row.names&quot;, suffixes = c(&quot;_biorxiv&quot;, &quot;_medrxiv&quot;))
+data$n_articles = rowSums(data[,c(&quot;n_articles_biorxiv&quot;, &quot;n_articles_medrxiv&quot;)])
+rownames(data) = data$Row.names
+#data = data.frame(n_articles = unlist(lapply(split(arxiv_data, ~date), nrow)))
+data$ym = substr(x = rownames(data), start = 1, stop = 7)
+data$yr = substr(x = rownames(data), start = 1, stop = 4)
+
+month_lines = cumsum(lapply(split(data, ~ym), nrow))
+year_lines = cumsum(lapply(split(data, ~yr), nrow))
+#
+heatcols = colorRampPalette(c(&quot;#EFF3FF&quot;, &quot;#C6DBEF&quot;, &quot;#9ECAE1&quot;, &quot;#6BAED6&quot;, &quot;#4292C6&quot;, &quot;#2171B5&quot;, &quot;#084594&quot;))(180)
+
+par(mar = c(3, 3, 4, 1), family = &quot;mono&quot;)
+plot(NA, xlim = c(0, nrow(data)), ylim = c(0, 170), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+abline(v = month_lines, col = &quot;gray90&quot;, lty = 1, lwd = 0.6)
+abline(v = year_lines[c(&quot;2020&quot;, &quot;2021&quot;)], col = &quot;#2c3e50&quot;, lwd = 0.9)
+abline(h = seq(0, 150, 25), col = &quot;gray90&quot;, lwd = 0.9, lty = 2)
+
+axis(side = 1, at = month_lines, labels = substr(x = names(month_lines), 6, 7), las = 2, tick = FALSE, cex.axis = 0.6, line = -0.75, font.axis = 3, col.axis = &quot;#95a5a6&quot;)
+axis(side = 2, at = seq(0, 150, 25), labels = seq(0, 150, 25), las = 2, tick = FALSE, line = -0.5, col.axis = &quot;#95a5a6&quot;)
+axis(side = 3, at = year_lines[c(&quot;2020&quot;, &quot;2021&quot;)], labels = c(&quot;2020&quot;, &quot;2021&quot;), tick = FALSE, line = -1, col.axis = &quot;#8e44ad&quot;)
+
+pnt_col = &quot;#95a5a6&quot;
+# points(
+#   x = 1:nrow(data),
+#   y = data$n_articles,
+#   pch = 20,
+#   col = adjustcolor(col = pnt_col, alpha.f = .5), cex = 0.9
+# )
+#lines(smooth.spline(x = 1:nrow(data), y = data$n_articles), col = pnt_col, lwd = 3)
+
+#e67e22
+biorxiv_col = &quot;#e67e22&quot;
+points(
+  x = 1:nrow(data),
+  y = data$n_articles_biorxiv,
+  pch = 20,
+  col = adjustcolor(col = biorxiv_col, alpha.f = 0.2), cex = 0.9
+)
+lines(smooth.spline(x = 1:nrow(data), y = data$n_articles_biorxiv), col = biorxiv_col, lwd = 3)
+
+medrxiv_col = &quot;#27ae60&quot;
+points(
+  x = 1:nrow(data),
+  y = data$n_articles_medrxiv,
+  pch = 20,
+  col = adjustcolor(col = medrxiv_col, alpha.f = 0.2), cex = 0.9
+)
+lines(smooth.spline(x = 1:nrow(data), y = data$n_articles_medrxiv), col = medrxiv_col, lwd = 3)
+
+#mtext(text = &quot;Month&quot;, side = 1, line = 1.5, font = 2)
+#mtext(text = &quot;# of articles&quot;, side = 2, line = 2, font = 2)
+
+title(main = &quot;Frequency of COVID19 articles in bioRxiv and medRxiv&quot;, adj = 0, line = 2, col.main = &quot;#34495e&quot;, cex.main = 1)
+
+legend(x = &quot;topleft&quot;, legend = c(&quot;bioRxiv&quot;, &quot;medRxiv&quot;), col = c(biorxiv_col, medrxiv_col), bty = &quot;n&quot;, lwd = 2)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="line-chart-cigerate-consumption" class="section level2">
+<h2>Line chart: Cigerate consumption</h2>
+<p>Data obtained from <a
+href="https://www.datawrapper.de/charts">datawrapper</a>.</p>
+<pre class="r"><code>data = read.table(&quot;data/05-linechart_CigConsumption.csv&quot;, sep = &quot;,&quot;, header = TRUE)
+data[data == &quot;null&quot;] = NA
+data = apply(data, 2, as.numeric)
+data = as.data.frame(data)
+rownames(data) = data$country
+
+max_count = max(data[,2:ncol(data)], na.rm = TRUE)
+
+title_main = &quot;The rise and fall of cigarette consumption in developed countries&quot;
+title_sub = &quot;Sales of cigarettes per adult per day, in selected countries.\nFigures include manufactured cigarettes, as well as an estimated\nnumber of hand-rolled cigarettes,per adult (ages 15+) per day.&quot;
+
+layout(mat = matrix(data = c(1:2), nrow = 2), heights = c(2, 6))
+
+par(mar = c(0, 0, 0, 0))
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+text(x = 0, y = 0.8, labels = title_main, cex = 1, font = 2, adj = 0)
+text(x = 0, y = 0.35, labels = title_sub, cex = 1, font = 3, adj = 0)
+
+par(mar = c(3, 2, 0, 1))
+plot(NA, xlim = range(data$country), ylim = c(0, max_count), xlab = NA, ylab = NA, frame.plot = FALSE, axes = FALSE)
+axis(side = 2, at = seq(0, 12, 2), labels = seq(0, 12, 2), line = 0, col.axis = &quot;gray&quot;, cex.axis = 1, las = 2, tick = FALSE)
+abline(h = seq(0, 12, 2), lwd = 1, col = &quot;gray90&quot;)
+
+text(x = data$country[1], y = 10, labels = &quot;Sold cigarettes\nper day per adult&quot;, cex = 0.7, xpd = TRUE, adj = 0)
+
+for(i in 2:ncol(data)){
+  points(x = data$country, y = data[,i], pch = &quot;&quot;, type = &quot;l&quot;, col = &quot;#7f8c8d&quot;)  
+}
+
+hghlt = c(&quot;United.States&quot;, &quot;Germany&quot;, &quot;France&quot;)
+hghlt_cols = c(&quot;#c0392b&quot;, &quot;#16a085&quot;, &quot;#2980b9&quot;)
+for(hghlt_idx in seq_along(hghlt)){
+  hghlt_col_idx = which(colnames(data) == hghlt[hghlt_idx])
+  points(x = data$country, y = data[,hghlt_col_idx], pch = &quot;&quot;, type = &quot;l&quot;, col = hghlt_cols[hghlt_idx], lwd = 2)
+}
+
+text(x = data$country[1], y = c(6:4), labels = hghlt, col = hghlt_cols, adj = 0)
+
+axis(side = 1, at = pretty(data$country), labels = pretty(data$country), line = 0, tick = TRUE, col.axis = &quot;#7f8c8d&quot;, col = &quot;#7f8c8d&quot;)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="arrow-plot-women-in-parliment" class="section level2">
+<h2>Arrow plot: Women in Parliment</h2>
+<p>Data obtained from <a
+href="https://www.datawrapper.de/charts">datawrapper</a>.</p>
+<pre class="r"><code>data = read.table(&quot;data/04-arrowplot_WomenInParliment.csv&quot;, sep = &quot;,&quot;, header = TRUE)
+colnames(data) = c(&quot;Country&quot;, &quot;y2000&quot;, &quot;y2020&quot;, &quot;group&quot;)
+data$diff = data$y2020 - data$y2000
+
+pan_ratio = unname(unlist(lapply(split(data, ~group), nrow)))
+
+asia = split(data, ~group)[[1]]
+eu = split(data, ~group)[[2]]
+
+title_txt = &quot;Most countries have a higher share of women in their national parliaments than twenty years ago&quot;
+subtitle_txt = &quot;Proportion of seats held by women in national parliaments, 2000 and 2020,\nin selected countries in Europe, Central Asia, East Asia and the Pacific&quot;
+
+lo = layout(matrix(1:3, ncol = 1), heights = c(2, pan_ratio))
+par(mar = c(0, 0, 0, 0))
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+text(x = 0, y = 0.8, labels = title_txt, cex = 1, font = 2, adj = 0)
+text(x = 0, y = 0.35, labels = subtitle_txt, cex = 1, font = 3, adj = 0)
+
+par(mar = c(2, 7, 1, 1))
+
+temp = lapply(split(data, ~group), function(dat){
+  plot(
+    NA,
+    xlim = c(0, 50),
+    ylim = c(1, nrow(dat)),
+    frame.plot = FALSE,
+    axes = FALSE,
+    xlab = NA,
+    ylab = NA
+  )
+  abline(h = 1:nrow(dat), v = c(0, 25, 50), col = &quot;gray90&quot;, lwd = 0.6)
+  abline(v = 0, col = &quot;gray&quot;)
+  rect(xleft = dat$y2000, ybottom = 1:nrow(dat), xright = dat$y2020, ytop = 1:nrow(dat), lwd = 1.5, col = ifelse(test = dat$diff &gt; 0, yes = &quot;#3498db&quot;, no = &quot;#eb2f06&quot;), border = ifelse(test = dat$diff &gt; 0, yes = &quot;#3498db&quot;, no = &quot;#eb2f06&quot;))
+  for(i in 1:nrow(dat)){
+    if(dat$diff[i] &gt; 0){
+      points(x = dat$y2020[i], y = i, pch = &quot;&gt;&quot;, col = &quot;#3498db&quot;)
+      text(x = dat$y2020[i], y = i, labels = paste0(dat$y2020[i], &quot;%&quot;), col = &quot;#0c2461&quot;, pos = 4, cex = 0.9, xpd = TRUE)
+    }else{
+      points(x = dat$y2020[i], y = i, pch = &quot;&lt;&quot;, col = &quot;#eb2f06&quot;)
+      text(x = dat$y2020[i], y = i, labels = paste0(dat$y2000[i], &quot;%&quot;), pos = 2, col = &quot;#eb2f06&quot;, cex = 0.9, xpd = TRUE)
+    }
+  }
+  
+  axis(side = 2, at = 1:nrow(dat), labels = dat$Country, las = 2, tick = FALSE, line = -0.75, col = &quot;#2c3e50&quot;, cex.axis = 1)
+  axis(side = 1, at = c(0, 25, 50), labels = paste0(c(0, 25, 50), &quot;%&quot;), tick = FALSE, line = -1, col.axis = &quot;gray50&quot;, cex.axis = 1)
+  
+  title(x = &quot;topright&quot;, main = dat$group[1], adj = 1, col.main = &quot;#2c3e50&quot;, cex.main = 0.9)
+})
+
+bottom_anno = split(data, ~group)[[2]]
+bottom_anno = unlist(bottom_anno[nrow(bottom_anno), c(2, 3)])
+axis(side = 3, at = bottom_anno, labels = c(&quot;2000&quot;, &quot;2020&quot;), tick = FALSE, line = -1, col.axis = &quot;#7f8c8d&quot;, cex.axis = 0.75)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="dot-plot-oldest-country" class="section level2">
+<h2>Dot plot: Oldest country</h2>
+<p>Data obtained from <a
+href="https://www.datawrapper.de/charts">datawrapper</a>.</p>
+<pre class="r"><code>data = read.table(&quot;data/03-dotplot_OldestCountry.csv&quot;, sep = &quot;,&quot;, header = TRUE)
+data$Country[1:3] = c(&quot;Monaco&quot;, &quot;Japan&quot;, &quot;Germany&quot;)
+xlims = range(data[,2:4])
+
+par(mar = c(3, 5, 4, 1))
+plot(
+  NA,
+  xlim = xlims,
+  ylim = c(1, nrow(data)),
+  frame.plot = FALSE,
+  axes = FALSE,
+  xlab = NA,
+  ylab = NA
+)
+
+abline(h = 1:nrow(data), col = &quot;gray90&quot;)
+abline(v = pretty(xlims), col = &quot;gray90&quot;)
+axis(side = 3, at = pretty(xlims), labels = pretty(xlims), col = &quot;gray90&quot;, tick = FALSE, line = -1, cex.axis = 0.75, col.axis = &quot;gray50&quot;)
+
+for(i in 1:nrow(data)){
+  combined = rev(data[,&quot;Combined&quot;])[i]
+  male = rev(data[,&quot;Male&quot;])[i]
+  female = rev(data[,&quot;Female&quot;])[i]
+  
+  rect(xleft = male, ybottom = i-0.2, xright = female, ytop = i+0.2, col = &quot;#bdc3c7&quot;, border = NA)
+  points(x = combined, y = i, col = &quot;#34495e&quot;, pch = 19, cex = 1.5)
+  points(x = male, y = i, col = &quot;#60a3bc&quot;, pch = 19, cex = 1.5)
+  points(x = female, y = i, col = &quot;#e58e26&quot;, pch = 19, cex = 1.5)
+}
+
+legend(
+  x = 32, y = -0.5,
+  legend = c(&quot;Combined&quot;, &quot;Male&quot;, &quot;Female&quot;),
+  border = NA,
+  ncol = 3,
+  col = c(&quot;#34495e&quot;, &quot;#60a3bc&quot;, &quot;#e58e26&quot;),
+  pch = 19,
+  bty = &quot;n&quot;, xpd = TRUE, cex = 0.9, adj = 0)
+
+axis(
+  side = 2,
+  at = 1:nrow(data),
+  labels = rev(data$Country),
+  tick = FALSE,
+  cex.axis = 0.8, las = 2, line = -1, col = &quot;#34495e&quot;
+)
+
+title(
+  main = &quot;Germany is the third-oldest country in the world&quot;,
+  line = 3,
+  adj = 0,
+  xpd = TRUE,
+  cex.main = 1,
+  col.main = &quot;#2c3e50&quot;
+)
+
+title(
+  main = &quot;Median age in the three countries with the oldest population and selected other countries, in years&quot;,
+  line = 2,
+  adj = 0,
+  xpd = TRUE,
+  cex.main = 0.6,
+  col.main = &quot;#2c3e50&quot;
+)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="split-barplot-population-pyramid" class="section level2">
+<h2>Split barplot: Population Pyramid</h2>
+<p>Data obtained from <a
+href="https://www.datawrapper.de/charts">datawrapper</a>.</p>
+<pre class="r"><code>data = read.table(&quot;data/02-splitbarplot_PopGermany.csv&quot;, sep = &quot;,&quot;, header = TRUE)
+max_count = max(data[,c(&quot;male&quot;, &quot;female&quot;)]) #Maximum value
+
+par(mar = c(2, 3, 2, 1))
+plot(
+  NA,
+  xlim = c(-max_count, max_count),
+  ylim = c(1, nrow(data)),
+  frame.plot = FALSE,
+  axes = FALSE,
+  xlab = NA,
+  ylab = NA
+)
+
+axis(
+  side = 2,
+  at = 1:nrow(data)+0.4,
+  labels = rev(data$age.span),
+  tick = FALSE,
+  cex.axis = 0.8, las = 2, line = -1, col = &quot;#34495e&quot;
+)
+
+for(i in 1:nrow(data)){
+  row_idx = rev(1:nrow(data))[i] #Plot the data from bottom to top
+  
+  rect(xleft = -max_count, ybottom = i, xright = -10, ytop = i+0.9, col = &quot;#ecf0f1&quot;, border = NA)
+  
+  rect(
+    xleft = -data[row_idx, &quot;male&quot;],
+    xright = -10,
+    ybottom = i,
+    ytop = i + 0.9, col = &quot;#2980b9&quot;, border = NA,
+  )
+  pretty_pop_male = ifelse(test = data[row_idx, 2] &lt; 1e6,
+                             yes = paste0(round(data[row_idx, 2] / 1000, 1), &quot;k&quot;),
+                             no = paste0(round(data[row_idx, 2] / 1e6, 1), &quot;m&quot;))
+  
+  if(data[row_idx, 2] &lt; 1e6){
+    text(
+      x = -data[row_idx, &quot;male&quot;],
+      y = i + 0.4,
+      labels = pretty_pop_male,
+      pos = 2,
+      xpd = TRUE, cex = 0.7, col = &quot;black&quot;
+    )
+  }else{
+    text(
+      x = -500,
+      y = i + 0.4,
+      labels = pretty_pop_male,
+      pos = 2,
+      xpd = TRUE, cex = 0.7, col = &quot;white&quot;
+    )
+  }
+  
+  
+  
+  rect(xleft = -10, ybottom = i, xright = max_count, ytop = i+0.9, col = &quot;#ecf0f1&quot;, border = NA)
+  rect(
+    xleft = data[row_idx, &quot;female&quot;],
+    xright = 10,
+    ybottom = i,
+    ytop = i + 0.9, col = &quot;#c0392b&quot;, border = NA
+  )
+  pretty_pop_female = ifelse(test = data[row_idx, 3] &lt; 1e6,
+                           yes = paste0(round(data[row_idx, 3] / 1000, 1), &quot;k&quot;),
+                           no = paste0(round(data[row_idx, 3] / 1e6, 1), &quot;m&quot;))
+  
+  if(data[row_idx, 2] &lt; 1e6){
+    text(
+      x = data[row_idx, &quot;female&quot;],
+      y = i + 0.4,
+      labels = pretty_pop_male,
+      pos = 4,
+      xpd = TRUE, cex = 0.7, col = &quot;black&quot;
+    )
+  }else{
+    text(
+      x = 500,
+      y = i + 0.4,
+      labels = pretty_pop_female,
+      pos = 4,
+      xpd = TRUE, cex = 0.7, col = &quot;white&quot;
+    )
+  }
+}
+
+text(x = -max_count, y = nrow(data)+0.45, labels = &quot;male&quot;, adj = 0, cex = 0.8, font = 1)
+text(x = max_count, y = nrow(data)+0.45, labels = &quot;female&quot;, adj = 1, cex = 0.8, font = 1)
+
+title(main = &quot;Population projection for Germany, 2020&quot;, line = 1, adj = 0, col.main = &quot;#2c3e50&quot;)
+title(main = NA, sub = &quot;Projection from 2015\nbased on continued trend with higher immigration
+&quot;, line = 1, font.sub = 3, cex.sub = 0.6, adj = 1, col.sub = &quot;#7f8c8d&quot;)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="bar-plot-bechdel-test" class="section level2">
+<h2>Bar plot: Bechdel Test</h2>
+<p>Data obtained from <a
+href="https://www.datawrapper.de/charts">datawrapper</a>.</p>
+<pre class="r"><code>data = read.table(file = &quot;data/01-barplot_BechdelTest.csv&quot;, sep = &quot;,&quot;, header = TRUE)
+colnames(data) = c(&quot;Decade&quot;, &quot;3 of 3&quot;, &quot;2 of 3&quot;, &quot;1 of 3&quot;, &quot;0 of 3&quot;)
+rownames(data) = data$Decade
+data$Decade = NULL
+data = t(data)
+
+## Choose some color codes
+colorcodes = c(&quot;#1abc9c&quot;, &quot;#2980b9&quot;, &quot;#d35400&quot;, &quot;#c0392b&quot;)
+
+#Adjust the margins (bottom, left, top, and right)
+par(mar = c(4, 3, 3, 1))
+
+b_idx = barplot(
+  data,
+  horiz = TRUE,
+  las = 2,
+  col = colorcodes,
+  border = NA,
+  axes = FALSE,
+  names.arg = rep(NA, ncol(data))
+)
+mtext(text = colnames(data), side = 2, at = b_idx, las = 2, cex = 0.85, col = &quot;#2c3e50&quot;)
+abline(v = seq(0, 100, 50), col = &quot;gray90&quot;, lty = 1)
+axis(
+  side = 3,
+  at = seq(0, 100, 50),
+  labels = paste0(seq(0, 100, 50), &quot;%&quot;),
+  tick = FALSE,
+  col.axis = &quot;gray&quot;,
+  line = -1,
+  lwd = 0, cex.axis = 0.75
+)
+
+mainttl = &quot;Percentage of films that pass the Bechdel test&quot;
+subttl = &quot;Dataset includes 7,924 films.\nDataset has many more ratings for films released in recent decades, so earlier decades are likely to be less accurately represented.\nSome ratings given to films have been contested and may not be accurate.&quot;
+subttl2 = &quot;Source: Bechdel Test Website&quot;
+title(main = mainttl, line = 2, cex.main = 0.9, col = &quot;#2c3e50&quot;)
+title(
+  main = NA,
+  sub = subttl,
+  line = 3,
+  col.sub = &quot;#7f8c8d&quot;,
+  adj = 1,
+  font = 3, cex = 0.3, cex.sub = 0.5
+)
+title(
+  main = NA,
+  sub = subttl2,
+  line = 1.5,
+  col.sub = &quot;#7f8c8d&quot;,
+  adj = 1,
+  font = 3, cex = 0.3, cex.sub = 0.5
+)
+
+legend(
+  x = -1, y = -0.5,
+  legend = rownames(data),
+  border = NA,
+  ncol = nrow(data),
+  col = colorcodes,
+  pch = 15,
+  bty = &quot;n&quot;, xpd = TRUE, title = &quot;criteria passed&quot;, cex = 0.9, adj = 0)
+
+for(i in 1:ncol(data)){
+  text(
+    y = b_idx[i],
+    x = cumsum(data[, i]),
+    labels = paste0(data[, i], &quot;%&quot;),
+    cex = .6, adj = 1, col = &quot;#ecf0f1&quot;
+  )
+}</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.0 (2022-04-22)
+Platform: x86_64-apple-darwin17.0 (64-bit)
+Running under: macOS Big Sur/Monterey 10.16
+
+Matrix products: default
+BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] workflowr_1.7.0
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.8.3      highr_0.9         bslib_0.3.1       compiler_4.2.0   
+ [5] pillar_1.7.0      later_1.3.0       git2r_0.30.1      jquerylib_0.1.4  
+ [9] tools_4.2.0       getPass_0.2-2     digest_0.6.29     jsonlite_1.8.0   
+[13] evaluate_0.15     tibble_3.1.7      lifecycle_1.0.1   pkgconfig_2.0.3  
+[17] rlang_1.0.2       cli_3.3.0         rstudioapi_0.13   yaml_2.3.5       
+[21] xfun_0.31         fastmap_1.1.0     httr_1.4.3        stringr_1.4.0    
+[25] knitr_1.39        sass_0.4.1        fs_1.5.2          vctrs_0.4.1      
+[29] rprojroot_2.0.3   data.table_1.14.2 glue_1.6.2        R6_2.5.1         
+[33] processx_3.5.3    fansi_1.0.3       rmarkdown_2.14    callr_3.7.0      
+[37] magrittr_2.0.3    whisker_0.4       ps_1.7.0          promises_1.2.0.1 
+[41] htmltools_0.5.2   ellipsis_0.3.2    httpuv_1.6.5      utf8_1.2.2       
+[45] stringi_1.7.6     crayon_1.5.1     </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
