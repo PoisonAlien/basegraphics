@@ -7,4 +7,8 @@ editor_options:
   chunk_output_type: console
 ---
 
-Describe your project.
+Do you like `#Rstats` and `#Datavisualization`? This repository demonstrates base R to crate plots generated using base graphics with no dependencies. 
+
+This is for those who like to learn and customize base R plotting functions. `#BaseisBeautiful` :)
+
+This repository is maintained by [Anand Mayakonda](https://poisonalien.github.io/)

@@ -8,4 +8,25 @@ editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+## Introduction
+
+Base graphics in `R` is extremely powerful, blazing fast, and offers extremely customization data visualization solutions. Unfortunately, in the world of `ggplot2`, base graphics is largely ignored due to lack proper documentations and howtos.
+
+This document demonstrates the usage of base `R` graphics to generate visually appealing plots, without any dependencies.
+
+
+I also tweet plots [@baseRgraphics](https://twitter.com/baseRgraphics). Make sure to follow the account for updates :)
+
+## Results
+
+See the below documents:
+
+* [Plots and code](baseplots.html) to see the results
+* [Tweets](tweets.html)
+
+## Data and code
+
+* Raw data is stored under [data](https://github.com/PoisonAlien/basegraphics/tree/main/data) directory
+* Individual code for each plot is stored under [src](https://github.com/PoisonAlien/basegraphics/tree/main/src)
+
+<img width="1273" alt="plots" src="https://user-images.githubusercontent.com/8164062/177695856-58bfe9bb-667a-4c52-a7d4-51168671980e.png">
