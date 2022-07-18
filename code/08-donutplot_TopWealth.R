@@ -25,7 +25,7 @@ for (i in 2:ncol(data)) {
     data[, i],
     radius = 1,
     clockwise = TRUE,
-    labels = paste0(round(data[, i]), "%"), border = "white", 
+    labels = paste0(round(data[, i]), "%"), border = "white",
     col = c("#b33939", "#f7f1e3", "#40407a")
   )
   points(x = 0, y = 0, pch = 19, cex = 10, col = "white", lwd = 0)
