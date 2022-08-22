@@ -378,7 +378,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -389,8 +389,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -403,9 +403,9 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>basegraphics/</code> <span
@@ -428,21 +428,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -533,15 +530,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree9c9607b5aa0645e11de2102518234917ee985c6ftargetblank9c9607ba">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree91aa770f3b15ed143b8e60534c0f8a956e656d12targetblank91aa770a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/PoisonAlien/basegraphics/tree/9c9607b5aa0645e11de2102518234917ee985c6f" target="_blank">9c9607b</a>
+<a href="https://github.com/PoisonAlien/basegraphics/tree/91aa770f3b15ed143b8e60534c0f8a956e656d12" target="_blank">91aa770</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree9c9607b5aa0645e11de2102518234917ee985c6ftargetblank9c9607ba"
+id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree91aa770f3b15ed143b8e60534c0f8a956e656d12targetblank91aa770a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -551,7 +548,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/PoisonAlien/basegraphics/tree/9c9607b5aa0645e11de2102518234917ee985c6f" target="_blank">9c9607b</a>.
+<a href="https://github.com/PoisonAlien/basegraphics/tree/91aa770f3b15ed143b8e60534c0f8a956e656d12" target="_blank">91aa770</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -571,13 +568,7 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  code/10-donut_BloodGroup.R
-    Untracked:  data/10-donut_BloodGroup.tsv
-    Untracked:  data/10-donut_BloodGroupCountry.tsv
     Untracked:  data/measles.Rds
-
-Unstaged changes:
-    Modified:   analysis/baseplots.Rmd
 
 </code></pre>
 <p>
@@ -623,6 +614,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/PoisonAlien/basegraphics/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/baseplots.html" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+<td>
+workflowr::wflow_publish(files = c("analysis/baseplots.Rmd",
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/848d90567b3b728220977600fb63ea81464aafa8/analysis/baseplots.Rmd" target="_blank">848d905</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+<td>
+blood donuts
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -851,6 +876,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">4f94642</a>
 </td>
 <td>
@@ -946,6 +982,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">4f94642</a>
@@ -1076,6 +1123,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">4f94642</a>
@@ -1213,6 +1271,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">4f94642</a>
@@ -1368,6 +1437,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">4f94642</a>
 </td>
 <td>
@@ -1467,6 +1547,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">4f94642</a>
 </td>
 <td>
@@ -1547,6 +1638,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">4f94642</a>
@@ -1668,6 +1770,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">4f94642</a>
 </td>
 <td>
@@ -1759,6 +1872,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">4f94642</a>
@@ -1865,6 +1989,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">4f94642</a>
@@ -1983,6 +2118,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">4f94642</a>
@@ -2130,6 +2276,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-12-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-12-1.png" target="_blank">4f94642</a>
