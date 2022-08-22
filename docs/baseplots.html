@@ -14,7 +14,7 @@
 
 <title>Pretty base plots</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.15/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -156,11 +156,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -374,7 +378,7 @@ div.tocify {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -385,8 +389,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -395,13 +399,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-07-18
+<strong>Last updated:</strong> 2022-08-22
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>basegraphics/</code> <span
@@ -424,18 +428,21 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
+changes </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguptodate"
+<div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
+<p>The R Markdown file has unstaged changes. To know which version of
+the R Markdown file created these results, you’ll want to first commit
+it to the Git repo. If you’re still working on the analysis, you can
+ignore this warning. When you’re finished, you can run
+<code>wflow_publish</code> to commit the R Markdown file and build the
+HTML.</p>
 </div>
 </div>
 </div>
@@ -526,15 +533,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree4b6aa1e7791bf2520459c29462dc9284f0451fa8targetblank4b6aa1ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree9c9607b5aa0645e11de2102518234917ee985c6ftargetblank9c9607ba">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/PoisonAlien/basegraphics/tree/4b6aa1e7791bf2520459c29462dc9284f0451fa8" target="_blank">4b6aa1e</a>
+<a href="https://github.com/PoisonAlien/basegraphics/tree/9c9607b5aa0645e11de2102518234917ee985c6f" target="_blank">9c9607b</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree4b6aa1e7791bf2520459c29462dc9284f0451fa8targetblank4b6aa1ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree9c9607b5aa0645e11de2102518234917ee985c6ftargetblank9c9607ba"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -544,7 +551,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/PoisonAlien/basegraphics/tree/4b6aa1e7791bf2520459c29462dc9284f0451fa8" target="_blank">4b6aa1e</a>.
+<a href="https://github.com/PoisonAlien/basegraphics/tree/9c9607b5aa0645e11de2102518234917ee985c6f" target="_blank">9c9607b</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -562,12 +569,15 @@ Ignored files:
     Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
-    Ignored:    code/.DS_Store
 
 Untracked files:
-    Untracked:  .Rbuildignore
-    Untracked:  LICENSE.md
-    Untracked:  README.html
+    Untracked:  code/10-donut_BloodGroup.R
+    Untracked:  data/10-donut_BloodGroup.tsv
+    Untracked:  data/10-donut_BloodGroupCountry.tsv
+    Untracked:  data/measles.Rds
+
+Unstaged changes:
+    Modified:   analysis/baseplots.Rmd
 
 </code></pre>
 <p>
@@ -613,6 +623,23 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/PoisonAlien/basegraphics/9c9607b5aa0645e11de2102518234917ee985c6f/docs/baseplots.html" target="_blank">9c9607b</a>
+</td>
+<td>
+PoisonAlien
+</td>
+<td>
+2022-07-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -720,41 +747,85 @@ accessible/open</p>
 <p>Finally, I apologize in advance for the uncommentated code. Lets
 go..</p>
 </div>
-<div id="bubble-chart-california-fires" class="section level2">
-<h2>Bubble chart: California fires</h2>
+<div id="donut-chart-blood-group-distrubution" class="section level2">
+<h2>Donut chart: Blood group distrubution</h2>
 <p>Recreating plot from <a
-href="https://www.buzzfeednews.com/article/peteraldhous/california-wildfires-people-climate">buzzfeed</a></p>
-<p>Original <a
-href="https://buzzfeednews.github.io/2018-07-wildfire-trends/">ggplot
-source</a></p>
-<pre class="r"><code>#download.file(url = &quot;https://raw.githubusercontent.com/BuzzFeedNews/2018-07-wildfire-trends/master/data/calfire_frap.csv&quot;, destfile = &quot;data/09-calfire_frap.csv&quot;)
-data = read.delim(file = &quot;data/09-calfire_frap.csv&quot;, sep = &quot;,&quot;)
+href="https://www.visualcapitalist.com/visualizing-the-most-widespread-blood-types-in-every-country/">visualcapitalist</a></p>
+<pre class="r"><code># Blood group distribution across the world
+# MIT License
+# Copyright (c) 2022 Anand Mayakonda &lt;anandmt3@gmail.com&gt;
+# Recreating plot from https://www.visualcapitalist.com/visualizing-the-most-widespread-blood-types-in-every-country/
 
-date_lvls = seq.Date(as.Date(&quot;1950/01/01&quot;), as.Date(&quot;2017/12/31&quot;), 1)
-md = names(table(substr(date_lvls, 6, 10)))
+data = read.delim(file = &quot;data/10-donut_BloodGroup.tsv&quot;)
+data2 = read.delim(file = &quot;data/10-donut_BloodGroupCountry.tsv&quot;)
 
-data$reporting_date = factor(data$alarm_date, levels = as.character.Date(date_lvls), ordered = TRUE)
-data$reporting_date = as.Date(data$reporting_date)
-data = data[order(data$reporting_date),]
-data$md = substr(x = data$reporting_date, 6, 10)
-data$md = factor(x = data$md, levels = md, ordered = TRUE)
 
-par(mar = c(1, 3, 3, 1), family = &quot;mono&quot;)
-plot(NA, pch = NA, axes = FALSE, ylim = c(1950,2017), xlim = c(1, 366))
-abline(h = 1950:2017, v = c(0, cumsum(table(substr(md, 1, 2)))), col = &quot;gray90&quot;)
-abline(h = seq(1950, 2010, 10), col = adjustcolor(&quot;#34495e&quot;, 0.5), lwd = 1)
-symb_cols = adjustcolor(col = &quot;#e74c3c&quot;, alpha.f = 0.6)
-symbols(
-  x = data$md,
-  y = data$year_, add = TRUE,
-  circles = sqrt(data$gis_acres / pi),
-  inches = 0.12, bty = &quot;n&quot;, pch = 19, bg = symb_cols, fg = symb_cols
+cols = hcl.colors(n = 8, palette = &quot;Viridis&quot;, alpha = 0.8)
+cols = c(&quot;#c23616&quot;, &quot;#f0932b&quot;, &quot;#f9ca24&quot;, &quot;#6ab04c&quot;, &quot;#40739e&quot;, &quot;#192a56&quot;, &quot;#ff9ff3&quot;, &quot;purple&quot;)
+
+# lomat = matrix(data = c(1,1,1,2,2,2,3,3,3,4,4,4,5,5,5,
+#                         6,6,6,7,7,7,8,8,8,9,9,9,10,10,10,
+#                         11,11,11,0,12,12,12,0,13,13,13,0,14,14,14,
+#                         0,0,15,15,15,0,16,16,16,0,17,17,17,0,0),
+#                         nrow = 4, byrow = TRUE)
+
+lomat = matrix(data = c(rep(1, 5), 2:11, rep(12, 5)), nrow = 4, ncol = 5, byrow = TRUE)
+
+lo = layout(mat = lomat, heights = c(0.5, 3, 3, 1))
+
+par(mar = c(0, 0, 0, 0), bg = &quot;#ecf0f1&quot;, family = &quot;mono&quot;)
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), axes = FALSE)
+title(
+  main = &quot;Distribution of Blood types by country&quot;,
+  line = -3,
+  cex.main = 2.3,
+  col.main = &quot;white&quot;,
+  xpd = TRUE,
+  outer = TRUE,
+  family = &quot;mono&quot;, col.main = &quot;#222f3e&quot;
 )
-axis(side = 1, at = cumsum(table(substr(md, 1, 2))), labels = month.abb, tick = FALSE, col.axis = &quot;#34495e&quot;, line = -1.2, cex.axis = 0.7)
-axis(side = 2, at = seq(1950, 2010, 10), las = 2, tick = FALSE, line = -1, col.axis = &quot;#34495e&quot;)
+# text(
+#   x = 0.5,
+#   y = 0.3,
+#   label = &quot;Distribution of Blood types by country&quot;,
+#   cex = 2,
+#   font = 2,
+#   col = &quot;white&quot;, xpd = TRUE, family = &quot;Helvetica&quot;
+# )
 
-title(&quot;Big fires have gotten more common in California&quot;, adj = 0, line = 2, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)
-title(&quot;Each fire is a dot that is scaled by the area that ultimately burned, centered on the date on which\nthe alarm was sounded&quot;, adj = 0, line = 0, font.main = 1, cex.main = 0.8, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)</code></pre>
+
+par(mar = c(1, 1, 1, 1))
+
+for(i in 1:nrow(data2)){
+  pie(
+    as.numeric(data2[i, 2:9]),
+    clockwise = TRUE,
+    col = cols,
+    border = cols,
+    labels = paste0(as.numeric(data2[i, 2:ncol(data)])[1:4], &quot;%&quot;), radius = 1.05, col.lab = &quot;white&quot;, xpd = TRUE, cex = 0.8
+  ) #
+  points(x = 0, y = 0, pch = 19, cex = 8, col = &quot;#ecf0f1&quot;, lwd = 0)
+  #legend(x = &quot;bottomright&quot;, legend = data[i,&quot;Region&quot;], bty = &quot;n&quot;, cex.title = 1.2, adj = 0)
+  text(
+    x = 0,
+    y = -1.6,
+    label = paste0(data2[i, &quot;Country&quot;], &quot;\n&quot;, data2[i, &quot;Pop&quot;]),
+    family = &quot;mono&quot;,
+    cex = 1.4,
+    xpd = TRUE,
+    font = 2,
+    col = &quot;#535c68&quot;
+  )
+}
+
+plot(NA, xlim = c(0, 1), ylim = c(0, 1), axes = FALSE)
+legend(
+  x = &quot;center&quot;,
+  legend = c(&quot;O+&quot;, &quot;A+&quot;, &quot;B+&quot;, &quot;AB+&quot;, &quot;O-&quot;, &quot;A-&quot;, &quot;B-&quot;, &quot;AB-&quot;),
+  col = cols,
+  ncol = 8,
+  pch = 15, bty = &quot;n&quot;, cex = 1.7
+)</code></pre>
 <p><img src="figure/baseplots.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
@@ -792,6 +863,103 @@ PoisonAlien
 <tr>
 <td>
 <a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">7d5d068</a>
+</td>
+<td>
+PoisonAlien
+</td>
+<td>
+2022-07-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code># for(i in 1:nrow(data)){
+#   pie(
+#     as.numeric(data[i, 2:ncol(data)]),
+#     clockwise = TRUE,
+#     col = cols,
+#     border = cols,
+#     labels = paste0(as.numeric(data[i, 2:ncol(data)]), &quot;%&quot;), radius = 1.05, col.font = cols, xpd = TRUE, cex = 0.8
+#   ) #
+#   points(x = 0, y = 0, pch = 19, cex = 8, col = &quot;white&quot;, lwd = 0)
+#   #legend(x = &quot;bottomright&quot;, legend = data[i,&quot;Region&quot;], bty = &quot;n&quot;, cex.title = 1.2, adj = 0)
+#   text(x = 0, y = -2, label = data[i,&quot;Region&quot;], family = &quot;mono&quot;, cex= 1.4, xpd= TRUE, font = 2)
+# }</code></pre>
+</div>
+<div id="bubble-chart-california-fires" class="section level2">
+<h2>Bubble chart: California fires</h2>
+<p>Recreating plot from <a
+href="https://www.buzzfeednews.com/article/peteraldhous/california-wildfires-people-climate">buzzfeed</a></p>
+<p>Original <a
+href="https://buzzfeednews.github.io/2018-07-wildfire-trends/">ggplot
+source</a></p>
+<pre class="r"><code>#download.file(url = &quot;https://raw.githubusercontent.com/BuzzFeedNews/2018-07-wildfire-trends/master/data/calfire_frap.csv&quot;, destfile = &quot;data/09-calfire_frap.csv&quot;)
+data = read.delim(file = &quot;data/09-calfire_frap.csv&quot;, sep = &quot;,&quot;)
+
+date_lvls = seq.Date(as.Date(&quot;1950/01/01&quot;), as.Date(&quot;2017/12/31&quot;), 1)
+md = names(table(substr(date_lvls, 6, 10)))
+
+data$reporting_date = factor(data$alarm_date, levels = as.character.Date(date_lvls), ordered = TRUE)
+data$reporting_date = as.Date(data$reporting_date)
+data = data[order(data$reporting_date),]
+data$md = substr(x = data$reporting_date, 6, 10)
+data$md = factor(x = data$md, levels = md, ordered = TRUE)
+
+par(mar = c(1, 3, 3, 1), family = &quot;mono&quot;)
+plot(NA, pch = NA, axes = FALSE, ylim = c(1950,2017), xlim = c(1, 366))
+abline(h = 1950:2017, v = c(0, cumsum(table(substr(md, 1, 2)))), col = &quot;gray90&quot;)
+abline(h = seq(1950, 2010, 10), col = adjustcolor(&quot;#34495e&quot;, 0.5), lwd = 1)
+symb_cols = adjustcolor(col = &quot;#e74c3c&quot;, alpha.f = 0.6)
+symbols(
+  x = data$md,
+  y = data$year_, add = TRUE,
+  circles = sqrt(data$gis_acres / pi),
+  inches = 0.12, bty = &quot;n&quot;, pch = 19, bg = symb_cols, fg = symb_cols
+)
+axis(side = 1, at = cumsum(table(substr(md, 1, 2))), labels = month.abb, tick = FALSE, col.axis = &quot;#34495e&quot;, line = -1.2, cex.axis = 0.7)
+axis(side = 2, at = seq(1950, 2010, 10), las = 2, tick = FALSE, line = -1, col.axis = &quot;#34495e&quot;)
+
+title(&quot;Big fires have gotten more common in California&quot;, adj = 0, line = 2, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)
+title(&quot;Each fire is a dot that is scaled by the area that ultimately burned, centered on the date on which\nthe alarm was sounded&quot;, adj = 0, line = 0, font.main = 1, cex.main = 0.8, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">4f94642</a>
+</td>
+<td>
+PoisonAlien
+</td>
+<td>
+2022-07-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -885,13 +1053,13 @@ for(h in to_hghlt){
 text(x = 1900, y = 1e6, label = &quot;EUROPE&quot;, col = &quot;white&quot;, cex = 1.2, font = 2)
 text(x = 1990, y = 2e6, label = &quot;ASIA&quot;, col = &quot;white&quot;, cex = 1.2, adj = 0.8, font = 2)
 text(x = 1990, y = 6e6, label = &quot;AMERICA&quot;, col = &quot;#2c3e50&quot;, cex = 1.2, adj = 0.7, font = 2)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
-Past versions of unnamed-chunk-2-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
+Past versions of unnamed-chunk-3-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-2-1" class="collapse">
+<div id="fig-unnamed-chunk-3-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -910,7 +1078,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -921,7 +1089,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1022,13 +1190,13 @@ legend(
   text.col = seat_cols,
   bty = &quot;n&quot;, xpd = TRUE, cex = 1, text.font = 2
 )</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
-Past versions of unnamed-chunk-3-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
+Past versions of unnamed-chunk-4-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-3-1" class="collapse">
+<div id="fig-unnamed-chunk-4-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1047,7 +1215,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1058,7 +1226,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1093,7 +1261,8 @@ package.</p>
 <p>NOTE: Counts are raw and not normalized for per 100K as in original
 WSJ plot. Color grading are according to the breaks in the number of
 cases rather than being continuous.</p>
-<pre class="r"><code>mat = readRDS(system.file(&quot;extdata&quot;, &quot;measles.rds&quot;, package = &quot;ComplexHeatmap&quot;))
+<pre class="r"><code>#mat = readRDS(system.file(&quot;extdata&quot;, &quot;measles.rds&quot;, package = &quot;ComplexHeatmap&quot;))
+mat = readRDS(&quot;data/measles.Rds&quot;)
 #Get rid of some of the entries
 rem_states = c(
   &quot;AMERICAN.SAMOA&quot;,
@@ -1174,13 +1343,13 @@ title(main = title_sub, adj = 0.5, cex.main = 0.8, line = 1, font = 3, adj = 0)
 par(mar = c(0, 0, 0, 0), family = &quot;mono&quot;)
 plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
 legend(x = &quot;center&quot;, legend = break_pnts, col = colpal, pch = 15, ncol = 7, bty = &quot;n&quot;, cex = 0.65, title = &quot;no. of cases, upto&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
-Past versions of unnamed-chunk-4-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-4-1" class="collapse">
+<div id="fig-unnamed-chunk-5-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1199,7 +1368,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1210,7 +1379,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1273,13 +1442,13 @@ bot_cntrs = data[data$country %in% c(&quot;South Africa&quot;, &quot;China&quot;
 text(x = bot_cntrs$logGDP, y = bot_cntrs$`Life expectancy`, labels = bot_cntrs$country, pos = 1, cex = 0.6, col = &quot;#2c2c54&quot;)
 top_cntrs = data[data$country %in% c(&quot;Liberia&quot;, &quot;Timor-Leste&quot;, &quot;Nicaragua&quot;, &quot;Costa Rica&quot;),]
 text(x = top_cntrs$logGDP, y = top_cntrs$`Life expectancy`, labels = top_cntrs$country, pos = 3, cex = 0.6, col = &quot;#2c2c54&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div id="fig-unnamed-chunk-6-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1298,7 +1467,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1309,7 +1478,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1355,13 +1524,13 @@ for (i in 2:ncol(data)) {
   points(x = 0, y = 0, pch = 19, cex = 10, col = &quot;white&quot;, lwd = 0)
   title(main = colnames(data)[i], adj = 0)
 }</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
-Past versions of unnamed-chunk-6-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div id="fig-unnamed-chunk-7-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1380,7 +1549,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1391,7 +1560,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1474,13 +1643,13 @@ lines(smooth.spline(x = 1:nrow(data), y = data$n_articles_medrxiv), col = medrxi
 title(main = &quot;Frequency of COVID19 articles in bioRxiv and medRxiv&quot;, adj = 0, line = 2, col.main = &quot;#34495e&quot;, cex.main = 1)
 
 legend(x = &quot;topleft&quot;, legend = c(&quot;bioRxiv&quot;, &quot;medRxiv&quot;), col = c(biorxiv_col, medrxiv_col), bty = &quot;n&quot;, lwd = 2)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
-Past versions of unnamed-chunk-7-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div id="fig-unnamed-chunk-8-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1499,7 +1668,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1510,7 +1679,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1567,13 +1736,13 @@ for(hghlt_idx in seq_along(hghlt)){
 text(x = data$country[1], y = c(6:4), labels = hghlt, col = hghlt_cols, adj = 0)
 
 axis(side = 1, at = pretty(data$country), labels = pretty(data$country), line = 0, tick = TRUE, col.axis = &quot;#7f8c8d&quot;, col = &quot;#7f8c8d&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
-Past versions of unnamed-chunk-8-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div id="fig-unnamed-chunk-9-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1592,7 +1761,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1603,7 +1772,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1673,13 +1842,13 @@ temp = lapply(split(data, ~group), function(dat){
 bottom_anno = split(data, ~group)[[2]]
 bottom_anno = unlist(bottom_anno[nrow(bottom_anno), c(2, 3)])
 axis(side = 3, at = bottom_anno, labels = c(&quot;2000&quot;, &quot;2020&quot;), tick = FALSE, line = -1, col.axis = &quot;#7f8c8d&quot;, cex.axis = 0.75)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
-Past versions of unnamed-chunk-9-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div id="fig-unnamed-chunk-10-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1698,7 +1867,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1709,7 +1878,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1791,13 +1960,13 @@ title(
   cex.main = 0.6,
   col.main = &quot;#2c3e50&quot;
 )</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
-Past versions of unnamed-chunk-10-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div id="fig-unnamed-chunk-11-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1816,7 +1985,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1827,7 +1996,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
@@ -1938,13 +2107,13 @@ text(x = max_count, y = nrow(data)+0.45, labels = &quot;female&quot;, adj = 1, c
 title(main = &quot;Population projection for Germany, 2020&quot;, line = 1, adj = 0, col.main = &quot;#2c3e50&quot;)
 title(main = NA, sub = &quot;Projection from 2015\nbased on continued trend with higher immigration
 &quot;, line = 1, font.sub = 3, cex.sub = 0.6, adj = 1, col.sub = &quot;#7f8c8d&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
-Past versions of unnamed-chunk-11-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div id="fig-unnamed-chunk-12-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1963,24 +2132,13 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-12-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
 </td>
 <td>
 2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
 </td>
 </tr>
 </tbody>
@@ -2063,44 +2221,7 @@ for(i in 1:ncol(data)){
     cex = .6, adj = 1, col = &quot;#ecf0f1&quot;
   )
 }</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
-Past versions of unnamed-chunk-12-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-12-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-12-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -2110,13 +2231,13 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.2.0 (2022-04-22)
-Platform: x86_64-apple-darwin17.0 (64-bit)
-Running under: macOS Big Sur/Monterey 10.16
+<pre><code>R version 4.2.1 (2022-06-23)
+Platform: aarch64-apple-darwin20 (64-bit)
+Running under: macOS Monterey 12.3
 
 Matrix products: default
-BLAS:   /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRblas.0.dylib
-LAPACK: /Library/Frameworks/R.framework/Versions/4.2/Resources/lib/libRlapack.dylib
+BLAS:   /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/lib/libRlapack.dylib
 
 locale:
 [1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -2128,18 +2249,16 @@ other attached packages:
 [1] workflowr_1.7.0
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.8.3      highr_0.9         bslib_0.3.1       compiler_4.2.0   
- [5] pillar_1.7.0      later_1.3.0       git2r_0.30.1      jquerylib_0.1.4  
- [9] tools_4.2.0       getPass_0.2-2     digest_0.6.29     jsonlite_1.8.0   
-[13] evaluate_0.15     tibble_3.1.7      lifecycle_1.0.1   pkgconfig_2.0.3  
-[17] rlang_1.0.2       cli_3.3.0         rstudioapi_0.13   yaml_2.3.5       
-[21] xfun_0.31         fastmap_1.1.0     httr_1.4.3        stringr_1.4.0    
-[25] knitr_1.39        sass_0.4.1        fs_1.5.2          vctrs_0.4.1      
-[29] rprojroot_2.0.3   data.table_1.14.2 glue_1.6.2        R6_2.5.1         
-[33] processx_3.5.3    fansi_1.0.3       rmarkdown_2.14    callr_3.7.0      
-[37] magrittr_2.0.3    whisker_0.4       ps_1.7.0          promises_1.2.0.1 
-[41] htmltools_0.5.2   ellipsis_0.3.2    httpuv_1.6.5      utf8_1.2.2       
-[45] stringi_1.7.6     crayon_1.5.1     </code></pre>
+ [1] Rcpp_1.0.9        rstudioapi_0.13   knitr_1.39        whisker_0.4      
+ [5] magrittr_2.0.3    getPass_0.2-2     R6_2.5.1          rlang_1.0.4      
+ [9] fastmap_1.1.0     highr_0.9         stringr_1.4.0     httr_1.4.4       
+[13] tools_4.2.1       data.table_1.14.2 xfun_0.32         cli_3.3.0        
+[17] jquerylib_0.1.4   git2r_0.30.1      htmltools_0.5.3   yaml_2.3.5       
+[21] digest_0.6.29     rprojroot_2.0.3   processx_3.7.0    callr_3.7.1      
+[25] later_1.3.0       sass_0.4.2        promises_1.2.0.1  fs_1.5.2         
+[29] ps_1.7.1          cachem_1.0.6      glue_1.6.2        evaluate_0.16    
+[33] rmarkdown_2.15    stringi_1.7.8     bslib_0.4.0       compiler_4.2.1   
+[37] jsonlite_1.8.0    httpuv_1.6.5     </code></pre>
 </div>
 </div>
 
