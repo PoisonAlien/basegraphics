@@ -27,6 +27,94 @@ Following are the major sources of all the recreated plots.
 
 Finally, I apologize in advance for the uncommentated code. Lets go..
 
+
+## Barplot: Berlin Marathon 2022 Finish times
+
+2022 Berlin marathon set the new record for fastest marathon finish by [Eliud Kipchoge](https://en.wikipedia.org/wiki/Eliud_Kipchoge). Lets celebrate this by recreating the [STRAVA inspired](https://strava.app.link/8Z4DsNq5Ftb) Berlin marathon finish times. Of course the plot is not nearly identical to the one on strava and I suspect there might have been issues with data scraping.
+
+This is how got the raw data:
+
+Max 100 results per page. There are 356 pages on the official [site](https://berlin.r.mikatiming.com/2022/?pid=search&pidp=start)
+
+```{r,  eval = FALSE, engine='bash'}
+#!/usr/bin/env bash
+
+for (( i = 1; i < 356; i++ )); do
+        echo ${i}
+        url="https://berlin.r.mikatiming.com/2022/?page=${i}&event=BML&num_results=100&pid=search&search%5Bage_class%5D=%25&search%5Bsex%5D=%25&search%5Bnation%5D=%25&search_sort=name"
+        wget -O berlin.html ${url}
+        grep type-fullname berlin.html | tr '>' '\t' | cut -f 3 | tr '<' '\t' | cut -f1 | uniq > runner_${i}.tsv
+        grep Finish berlin.html | tr '>' '\t' | grep -v 'pan class' | cut -f 4 | tr '<' '\t' | cut -f1 > times_${i}.tsv
+done
+
+cat times_* | grep -v Finish | grep -v DSQ > 14-barplot_BerlinMarathon2022.tsv
+```
+
+
+```{r}
+data = read.delim(file = "data/14-barplot_BerlinMarathon2022.tsv", header = FALSE)
+
+data$secs = apply(X = data, MARGIN = 1, FUN = function(x){
+  sapply(strsplit(x = x, split = ":"), function(x) {
+    as.numeric(x[1]) * 3600 + as.numeric(x[2]) * 60 + as.numeric(x[3])
+  })
+})
+data$mins = data$secs / 60
+data$cut = cut(x = data$mins, breaks = seq(90, 480, 1))
+hcol = adjustcolor(col = '#d35400', alpha.f = 0.6)
+
+par(mar = c(3, 2, 3, 1), family = "mono")
+plot.new()
+plot.window(xlim = c(0, 390), ylim = range(table(data$cut)))
+abline(v = seq(0, 390, 30), col = "#ecf0f1")
+points(table(data$cut), type = 'h', col = hcol)
+#axis(side = 1, at = seq(0, 390, 30), labels = seq(90, 480, 30)/60, las = 2, col.axis = "#34495e", tick = FALSE, )
+text(
+  x = seq(0, 390, 30),
+  y = -45,
+  labels = c(
+    "1:30",
+    "2:00",
+    "2:30",
+    "3:00",
+    "3:30",
+    "4:00",
+    "4:30",
+    "5:00",
+    "5:30",
+    "6:00",
+    "6:30",
+    "7:00",
+    "7:30",
+    "8:00"
+  ),
+  srt = -45,
+  xpd = TRUE,
+  cex = 0.8, col = "#2c3e50"
+)
+
+kipchoge_slot_idx = which(names(table(data$cut)) == "(121,122]")
+assefa_slot_idx = which(names(table(data$cut)) == "(135,136]")
+
+median_time = median(data$secs) #245.7 i.e: 04:05:42
+median_time_idx = which(names(table(data$cut)) == "(245,246]")
+
+rect(xleft = kipchoge_slot_idx, ybottom = 0, xright = kipchoge_slot_idx, ytop = 100, border = "#34495e", lwd = 1.2)
+text(x = kipchoge_slot_idx, y = 90, labels = "KIPCHOGE\n2:01:09", cex = 0.7, pos = 3, font = 2)
+
+rect(xleft = assefa_slot_idx, ybottom = 0, xright = assefa_slot_idx, ytop = 200, border = "#95a5a6", lwd = 1.2)
+text(x = assefa_slot_idx, y = 190, labels = "ASSEFA\n2:15:37", cex = 0.7, pos = 3, font = 2)
+
+rect(xleft = median_time_idx, ybottom = 0, xright = median_time_idx, ytop = 90, border = "#34495e", lwd = 1.2)
+text(x = median_time_idx, y = 90, labels = "MEDIAN\n04:05:42", cex = 0.7, pos = 3, font = 2)
+
+mtext(text = "TIME [H:MM]", side = 1, line = 2)
+mtext(text = "NUMBER OF ATHLETES", side = 2, line = 0.5)
+
+title(main = "BMW BERLIN-MARATHON 2022: FINISH TIMES", col.main = "#2c3e50")
+```
+
+
 ## Bubble chart: Fastest growing/declining jobs
 
 Recreating the plot from [visualcapitalist](https://www.visualcapitalist.com/the-20-fastest-growing-jobs-in-the-next-decade/). Data is provided as a table in the corresponding article.
