@@ -27,6 +27,83 @@ Following are the major sources of all the recreated plots.
 
 Finally, I apologize in advance for the uncommentated code. Lets go..
 
+## Brand wars: Top global brands
+
+Recreating the plot from [d3](https://observablehq.com/@d3/bar-chart-race-explained)
+
+_NOTE_ Although the plots are generated with base code, converting  into a gif requires [ImageMagik](https://imagemagick.org/index.php) to be installed.
+
+
+```{r global_brands}
+data = read.csv(file = "data/16-global_brands.csv")
+single_entries = names(which(table(data$name) == 1))
+data = data[!data$name %in% single_entries,]
+
+mod_data = lapply(split(data, data$name), function(d){
+  brand = unique(d$name)
+  category = unique(d$category)
+  d_brand = lapply(1:(nrow(d)-1), function(idx){
+    val_idx = d[idx, "value"]
+    val_idx_next = d[idx+1, "value"]
+
+    date_idx = d[idx, "date"]
+    date_idx_next = d[idx+1, "date"]
+
+    seq_date = seq.Date(from = as.Date(date_idx), to = as.Date(date_idx_next), by = 'month')
+
+    data.frame(date = seq_date, value = round(seq(from = val_idx, to = val_idx_next, length.out = length(seq_date))))
+  })
+
+  d_brand = do.call(what = "rbind", d_brand)
+  d_brand$brand = brand
+  d_brand$category = category
+  d_brand
+})
+
+mod_data = do.call(what = "rbind", mod_data)
+mod_data$date = as.Date(as.character(mod_data$date))
+
+fnames = lapply(split(mod_data, mod_data$date), function(pd){
+  pd = pd[!duplicated(pd$brand),]
+  fname = NA
+  if(nrow(pd) >= 12){
+    pd = pd[order(pd$value, decreasing = T),][1:12,]
+
+    pd$value = ifelse(test = is.na(pd$value), yes = 0, no = pd$value)
+
+    fname = tempfile(pattern = "gb", fileext = ".png")
+    png(filename = fname, width = 750, height = 655, bg = "white", res = 120)
+    par(mar = c(0, 6, 0, 0))
+
+    plot(NA, xlim = c(0, max(pd$value)), ylim = c(0, 13), frame.plot = FALSE, axes = FALSE, xlab =NA, ylab = NA)
+    #main rect
+    rect(xleft = 0, ybottom = seq(0.1, 11.1, by = 1), ytop = seq(0.9, 11.9, by = 1), xright = rev(pd$value), col = "#fdcb6e", border = "#fdcb6e")
+    #add value to the end of rect
+    text(x = rev(pd$value), y = seq(0.45, 11.45, by = 1), labels = rev(pd$value), adj = 1, cex = 0.6, col = "black")
+    #Add category to the beginning
+    text(x = 100, y = seq(0.45, 11.45, by = 1), labels = rev(pd$category), adj = 0, cex = 0.6, col = "#636e72")
+    #add brand name as row names
+    text(x = -0.5, y = seq(0.45, 11.45, by = 1), labels = rev(pd$brand), adj = 1.1, xpd = TRUE, cex = 0.9, col = "#34495e", family = "mono")
+    #add top y axis labs
+    text(x = pretty(c(0, pd$value)), y = 12, labels = pretty(c(0, pd$value)), pos = 3, cex = 0.5)
+    rect(xleft = pretty(c(0, pd$value)), ybottom = 0, xright = pretty(c(0, pd$value)), ytop = 12, col = "maroon", border = "white")
+    #add year in progress
+    legend(x = "bottomright", legend = unique(substr(pd$date, 1, 4)), col = "#2c3e50", bty = "n", text.font = 2, cex = 1.5)
+    title(main = "Top global brands", line = -1, adj = 0)
+    title(main = "value in $M", line = -1.8, adj = 0, cex.main = 0.6, col.main = "#2c3e50")
+
+    dev.off()
+
+  }
+  fname
+})
+
+pngs = unlist(fnames, use.names = FALSE)
+cmd = paste0("convert -loop 0 -delay 8 ", paste(pngs, collapse = ' '), " globalbrands.gif")
+sys.log = system(command = cmd, intern = TRUE)
+```
+
+![](https://user-images.githubusercontent.com/8164062/227774637-665d03bf-61cc-43f6-bf11-dcbc89151131.gif)
 
 ## Piechart: Browser market share
 
@@ -34,7 +111,7 @@ Recreating the plot from [visualcapitalist](https://www.visualcapitalist.com/cp/
 
 _NOTE_ Although the plots are generated with base code, converting  into a gif requires [ImageMagik](https://imagemagick.org/index.php) to be installed.
 
-```{r, warning=FALSE}
+```{r browser_wars, warning=FALSE, eval=FALSE, }
 data = read.delim(file = "data/15-pieanimate_browserWars_compileData.tsv", header = TRUE)
 data$Total = round(data$Total, 2)
 data$browser = gsub(pattern = "Other", replacement = "others", x = data$browser)
@@ -165,7 +242,7 @@ cat times_* | grep -v Finish | grep -v DSQ > 14-barplot_BerlinMarathon2022.tsv
 ```
 
 
-```{r}
+```{r berlin_marathon}
 data = read.delim(file = "data/14-barplot_BerlinMarathon2022.tsv", header = FALSE)
 
 data$secs = apply(X = data, MARGIN = 1, FUN = function(x){
@@ -233,7 +310,7 @@ title(main = "BMW BERLIN-MARATHON 2022: FINISH TIMES", col.main = "#2c3e50")
 
 Recreating the plot from [visualcapitalist](https://www.visualcapitalist.com/the-20-fastest-growing-jobs-in-the-next-decade/). Data is provided as a table in the corresponding article.
 
-```{r}
+```{r jobs}
 data = read.delim(file = "data/11-bubblechart_furturejobs2030.tsv")
 
 cols = c("#16a085", "#2980b9", "#f39c12", "#8e44ad", "#e74c3c")
@@ -303,7 +380,7 @@ title(main = "OVER THE NEXT DECADE", adj = 0, line = 1.5, cex.main = 0.9, col.ma
 
 Recreating plot from [visualcapitalist](https://www.visualcapitalist.com/visualizing-the-most-widespread-blood-types-in-every-country/) 
 
-```{r}
+```{r blood_groups}
 # Blood group distribution across the world
 # MIT License
 # Copyright (c) 2022 Anand Mayakonda <anandmt3@gmail.com>
@@ -402,7 +479,7 @@ Recreating plot from [buzzfeed](https://www.buzzfeednews.com/article/peteraldhou
 
 Original [ggplot source](https://buzzfeednews.github.io/2018-07-wildfire-trends/)
 
-```{r}
+```{r cal_fires}
 #download.file(url = "https://raw.githubusercontent.com/BuzzFeedNews/2018-07-wildfire-trends/master/data/calfire_frap.csv", destfile = "data/09-calfire_frap.csv")
 data = read.delim(file = "data/09-calfire_frap.csv", sep = ",")
 
@@ -437,7 +514,7 @@ title("Each fire is a dot that is scaled by the area that ultimately burned, cen
 
 [Data source](https://app.datawrapper.de/chart/wsfqj/visualize#refine)
 
-```{r}
+```{r US_migration}
 data = read.table(file = "data/07-areachart_USmigration.csv", header = TRUE, sep = ",")
 
 #Maximum
@@ -521,7 +598,7 @@ Data source: https://www.tatsachen-ueber-deutschland.de/en/politics-germany/parl
 
 Acknowledgments: https://www.datawrapper.de/charts
 
-```{r}
+```{r DE_parliment}
 nseats = 736
 nrows = 14
 
@@ -618,10 +695,10 @@ Raw data matrix obtained as a part of `ComplexHeatmap` package.
 
 NOTE: Counts are raw and not normalized for per 100K as in original WSJ plot. Color grading are according to the breaks in the number of cases rather than being continuous.
 
-```{r}
-#mat = readRDS(system.file("extdata", "measles.rds", package = "ComplexHeatmap"))
-mat = readRDS("data/measles.Rds")
-#Get rid of some of the entries
+```{r measles}
+mat = readRDS(system.file("extdata", "measles.rds", package = "ComplexHeatmap"))
+#mat = readRDS("data/measles.Rds")
+  #Get rid of some of the entries
 rem_states = c(
   "AMERICAN.SAMOA",
   "GUAM",
@@ -707,7 +784,7 @@ legend(x = "center", legend = break_pnts, col = colpal, pch = 15, ncol = 7, bty 
 
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
 
-```{r}
+```{r rich_health}
 data = data.table::fread(input = "data/06-scatterplot_RichGDP.csv", data.table = FALSE)
 
 data$population = as.numeric(data$population)
@@ -758,7 +835,7 @@ text(x = top_cntrs$logGDP, y = top_cntrs$`Life expectancy`, labels = top_cntrs$c
 ## Donut charts: Wealthiset percentage
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
 
-```{r}
+```{r top_wealth}
 data = read.table("data/08-donutplot_TopWealth.csv", sep = ",", header = TRUE)
 
 lo =layout(mat = matrix(data = c(1, 1, 1, 2:7), nrow = 3, ncol = 3, byrow = TRUE), heights = c(1.7, 3, 3))
@@ -792,7 +869,7 @@ for (i in 2:ncol(data)) {
 Number of COVID19 articles in arxiv preprints
 
 Data obtained from [biorxiv API](https://api.biorxiv.org/covid19/)
-```{r}
+```{r covi_rxiv}
 arxiv_data = read.delim(file = "data/05-linechart_COVIDrxiv.tsv")
 arxiv_data$rel_date = as.Date.character(arxiv_data$rel_date)
 date_lvls = seq.Date(as.Date(arxiv_data[1,"rel_date"]), as.Date(arxiv_data[nrow(arxiv_data),"rel_date"]), 1)
@@ -863,7 +940,7 @@ legend(x = "topleft", legend = c("bioRxiv", "medRxiv"), col = c(biorxiv_col, med
 
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
 
-```{r}
+```{r cig_consumption}
 data = read.table("data/05-linechart_CigConsumption.csv", sep = ",", header = TRUE)
 data[data == "null"] = NA
 data = apply(data, 2, as.numeric)
@@ -909,7 +986,7 @@ axis(side = 1, at = pretty(data$country), labels = pretty(data$country), line = 
 
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
 
-```{r}
+```{r women_parl}
 data = read.table("data/04-arrowplot_WomenInParliment.csv", sep = ",", header = TRUE)
 colnames(data) = c("Country", "y2000", "y2020", "group")
 data$diff = data$y2020 - data$y2000
@@ -968,7 +1045,7 @@ axis(side = 3, at = bottom_anno, labels = c("2000", "2020"), tick = FALSE, line 
 
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
 
-```{r}
+```{r oldest_country}
 data = read.table("data/03-dotplot_OldestCountry.csv", sep = ",", header = TRUE)
 data$Country[1:3] = c("Monaco", "Japan", "Germany")
 xlims = range(data[,2:4])
@@ -1039,7 +1116,7 @@ title(
 
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
 
-```{r}
+```{r pop_pyramid}
 data = read.table("data/02-splitbarplot_PopGermany.csv", sep = ",", header = TRUE)
 max_count = max(data[,c("male", "female")]) #Maximum value
 
@@ -1139,7 +1216,7 @@ title(main = NA, sub = "Projection from 2015\nbased on continued trend with high
 
 Data obtained from [datawrapper](https://www.datawrapper.de/charts).
 
-```{r}
+```{r Bechdel_test}
 data = read.table(file = "data/01-barplot_BechdelTest.csv", sep = ",", header = TRUE)
 colnames(data) = c("Decade", "3 of 3", "2 of 3", "1 of 3", "0 of 3")
 rownames(data) = data$Decade
