@@ -14,7 +14,7 @@
 
 <title>Pretty base plots</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -392,7 +392,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-10-16
+<strong>Last updated:</strong> 2023-03-26
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -523,15 +523,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstreecdd72420c6af5e248230d37c929085281c538e7atargetblankcdd7242a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree54f4ae41b989c829456768170aa9f4159abf648ftargetblank54f4ae4a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/PoisonAlien/basegraphics/tree/cdd72420c6af5e248230d37c929085281c538e7a" target="_blank">cdd7242</a>
+<a href="https://github.com/PoisonAlien/basegraphics/tree/54f4ae41b989c829456768170aa9f4159abf648f" target="_blank">54f4ae4</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstreecdd72420c6af5e248230d37c929085281c538e7atargetblankcdd7242a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree54f4ae41b989c829456768170aa9f4159abf648ftargetblank54f4ae4a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -541,7 +541,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/PoisonAlien/basegraphics/tree/cdd72420c6af5e248230d37c929085281c538e7a" target="_blank">cdd7242</a>.
+<a href="https://github.com/PoisonAlien/basegraphics/tree/54f4ae41b989c829456768170aa9f4159abf648f" target="_blank">54f4ae4</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -556,24 +556,13 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  analysis/dark.css
-    Untracked:  analysis/flatly.css
-    Untracked:  analysis/mint.css
-    Untracked:  code/12-circle_linguisticDiversity.R
-    Untracked:  code/15-pieanimate_browserWars.R
-    Untracked:  code/15-pieanimate_browserWars_compileData.R
-    Untracked:  data/12-circle_linguisticDiversity.tsv
-    Untracked:  data/13-splitbarplot_PopEU.tsv
-    Untracked:  data/15-pieanimate_browserWars_compileData.tsv
-    Untracked:  data/measles.Rds
-
-Unstaged changes:
-    Deleted:    plots.png
+    Untracked:  code/16-global_brands.R
+    Untracked:  data/15-GenzUnemnployment.tsv
+    Untracked:  data/16-global_brands.csv
 
 </code></pre>
 <p>
@@ -619,6 +608,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/54f4ae41b989c829456768170aa9f4159abf648f/analysis/baseplots.Rmd" target="_blank">54f4ae4</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2023-03-26
+</td>
+<td>
+brand wars
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/PoisonAlien/basegraphics/bb723cc53bbbe0cd5f718a074c6d46dc61cbc5c4/docs/baseplots.html" target="_blank">bb723cc</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-10-16
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -880,6 +903,83 @@ accessible/open</p>
 <p>Finally, I apologize in advance for the uncommentated code. Lets
 go..</p>
 </div>
+<div id="brand-wars-top-global-brands" class="section level2">
+<h2>Brand wars: Top global brands</h2>
+<p>Recreating the plot from <a
+href="https://observablehq.com/@d3/bar-chart-race-explained">d3</a></p>
+<p><em>NOTE</em> Although the plots are generated with base code,
+converting into a gif requires <a
+href="https://imagemagick.org/index.php">ImageMagik</a> to be
+installed.</p>
+<pre class="r"><code>data = read.csv(file = &quot;data/16-global_brands.csv&quot;)
+single_entries = names(which(table(data$name) == 1))
+data = data[!data$name %in% single_entries,]
+
+mod_data = lapply(split(data, data$name), function(d){
+  brand = unique(d$name)
+  category = unique(d$category)
+  d_brand = lapply(1:(nrow(d)-1), function(idx){
+    val_idx = d[idx, &quot;value&quot;]
+    val_idx_next = d[idx+1, &quot;value&quot;]
+
+    date_idx = d[idx, &quot;date&quot;]
+    date_idx_next = d[idx+1, &quot;date&quot;]
+
+    seq_date = seq.Date(from = as.Date(date_idx), to = as.Date(date_idx_next), by = &#39;month&#39;)
+
+    data.frame(date = seq_date, value = round(seq(from = val_idx, to = val_idx_next, length.out = length(seq_date))))
+  })
+
+  d_brand = do.call(what = &quot;rbind&quot;, d_brand)
+  d_brand$brand = brand
+  d_brand$category = category
+  d_brand
+})
+
+mod_data = do.call(what = &quot;rbind&quot;, mod_data)
+mod_data$date = as.Date(as.character(mod_data$date))
+
+fnames = lapply(split(mod_data, mod_data$date), function(pd){
+  pd = pd[!duplicated(pd$brand),]
+  fname = NA
+  if(nrow(pd) &gt;= 12){
+    pd = pd[order(pd$value, decreasing = T),][1:12,]
+
+    pd$value = ifelse(test = is.na(pd$value), yes = 0, no = pd$value)
+
+    fname = tempfile(pattern = &quot;gb&quot;, fileext = &quot;.png&quot;)
+    png(filename = fname, width = 750, height = 655, bg = &quot;white&quot;, res = 120)
+    par(mar = c(0, 6, 0, 0))
+
+    plot(NA, xlim = c(0, max(pd$value)), ylim = c(0, 13), frame.plot = FALSE, axes = FALSE, xlab =NA, ylab = NA)
+    #main rect
+    rect(xleft = 0, ybottom = seq(0.1, 11.1, by = 1), ytop = seq(0.9, 11.9, by = 1), xright = rev(pd$value), col = &quot;#fdcb6e&quot;, border = &quot;#fdcb6e&quot;)
+    #add value to the end of rect
+    text(x = rev(pd$value), y = seq(0.45, 11.45, by = 1), labels = rev(pd$value), adj = 1, cex = 0.6, col = &quot;black&quot;)
+    #Add category to the beginning
+    text(x = 100, y = seq(0.45, 11.45, by = 1), labels = rev(pd$category), adj = 0, cex = 0.6, col = &quot;#636e72&quot;)
+    #add brand name as row names
+    text(x = -0.5, y = seq(0.45, 11.45, by = 1), labels = rev(pd$brand), adj = 1.1, xpd = TRUE, cex = 0.9, col = &quot;#34495e&quot;, family = &quot;mono&quot;)
+    #add top y axis labs
+    text(x = pretty(c(0, pd$value)), y = 12, labels = pretty(c(0, pd$value)), pos = 3, cex = 0.5)
+    rect(xleft = pretty(c(0, pd$value)), ybottom = 0, xright = pretty(c(0, pd$value)), ytop = 12, col = &quot;maroon&quot;, border = &quot;white&quot;)
+    #add year in progress
+    legend(x = &quot;bottomright&quot;, legend = unique(substr(pd$date, 1, 4)), col = &quot;#2c3e50&quot;, bty = &quot;n&quot;, text.font = 2, cex = 1.5)
+    title(main = &quot;Top global brands&quot;, line = -1, adj = 0)
+    title(main = &quot;value in $M&quot;, line = -1.8, adj = 0, cex.main = 0.6, col.main = &quot;#2c3e50&quot;)
+
+    dev.off()
+
+  }
+  fname
+})
+
+pngs = unlist(fnames, use.names = FALSE)
+cmd = paste0(&quot;convert -loop 0 -delay 8 &quot;, paste(pngs, collapse = &#39; &#39;), &quot; globalbrands.gif&quot;)
+sys.log = system(command = cmd, intern = TRUE)</code></pre>
+<p><img
+src="https://user-images.githubusercontent.com/8164062/227774637-665d03bf-61cc-43f6-bf11-dcbc89151131.gif" /></p>
+</div>
 <div id="piechart-browser-market-share" class="section level2">
 <h2>Piechart: Browser market share</h2>
 <p>Recreating the plot from <a
@@ -1081,88 +1181,7 @@ mtext(text = &quot;TIME [H:MM]&quot;, side = 1, line = 2)
 mtext(text = &quot;NUMBER OF ATHLETES&quot;, side = 2, line = 0.5)
 
 title(main = &quot;BMW BERLIN-MARATHON 2022: FINISH TIMES&quot;, col.main = &quot;#2c3e50&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
-Past versions of unnamed-chunk-3-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-3-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-3-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/berlin_marathon-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="bubble-chart-fastest-growingdeclining-jobs"
 class="section level2">
@@ -1232,88 +1251,7 @@ text(x = 31630,  y = -34, label = (&quot;Cutters&amp;\ntrimmers&quot;), cex = 0.
 
 title(main = &quot;The 20 Fastest Growing and Declining Jobs&quot;, adj = 0, line = 2.5, cex.main = 1.4, col.main = &quot;#2c3e50&quot;)
 title(main = &quot;OVER THE NEXT DECADE&quot;, adj = 0, line = 1.5, cex.main = 0.9, col.main = &quot;#2c3e50&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-4-1">
-Past versions of unnamed-chunk-4-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-4-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-4-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/jobs-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="donut-chart-blood-group-distrubution" class="section level2">
 <h2>Donut chart: Blood group distrubution</h2>
@@ -1394,88 +1332,7 @@ legend(
   ncol = 8,
   pch = 15, bty = &quot;n&quot;, cex = 1.7
 )</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-5-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/blood_groups-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code># for(i in 1:nrow(data)){
 #   pie(
 #     as.numeric(data[i, 2:ncol(data)]),
@@ -1524,88 +1381,7 @@ axis(side = 2, at = seq(1950, 2010, 10), las = 2, tick = FALSE, line = -1, col.a
 
 title(&quot;Big fires have gotten more common in California&quot;, adj = 0, line = 2, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)
 title(&quot;Each fire is a dot that is scaled by the area that ultimately burned, centered on the date on which\nthe alarm was sounded&quot;, adj = 0, line = 0, font.main = 1, cex.main = 0.8, family = &quot;Helvetica&quot;, col.main = &quot;#2C3A47&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
-Past versions of unnamed-chunk-6-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-6-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-6-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/cal_fires-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="area-chart-us-migration" class="section level2">
 <h2>Area chart: US migration</h2>
@@ -1687,88 +1463,7 @@ for(h in to_hghlt){
 text(x = 1900, y = 1e6, label = &quot;EUROPE&quot;, col = &quot;white&quot;, cex = 1.2, font = 2)
 text(x = 1990, y = 2e6, label = &quot;ASIA&quot;, col = &quot;white&quot;, cex = 1.2, adj = 0.8, font = 2)
 text(x = 1990, y = 6e6, label = &quot;AMERICA&quot;, col = &quot;#2c3e50&quot;, cex = 1.2, adj = 0.7, font = 2)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
-Past versions of unnamed-chunk-7-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-7-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-7-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/US_migration-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="parliament-plot-german-bundestag" class="section level2">
 <h2>Parliament plot: German Bundestag</h2>
@@ -1857,88 +1552,7 @@ legend(
   text.col = seat_cols,
   bty = &quot;n&quot;, xpd = TRUE, cex = 1, text.font = 2
 )</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
-Past versions of unnamed-chunk-8-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-8-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-8-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/DE_parliment-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="heatmap-measles" class="section level2">
 <h2>Heatmap: Measles</h2>
@@ -1961,9 +1575,9 @@ package.</p>
 <p>NOTE: Counts are raw and not normalized for per 100K as in original
 WSJ plot. Color grading are according to the breaks in the number of
 cases rather than being continuous.</p>
-<pre class="r"><code>#mat = readRDS(system.file(&quot;extdata&quot;, &quot;measles.rds&quot;, package = &quot;ComplexHeatmap&quot;))
-mat = readRDS(&quot;data/measles.Rds&quot;)
-#Get rid of some of the entries
+<pre class="r"><code>mat = readRDS(system.file(&quot;extdata&quot;, &quot;measles.rds&quot;, package = &quot;ComplexHeatmap&quot;))
+#mat = readRDS(&quot;data/measles.Rds&quot;)
+  #Get rid of some of the entries
 rem_states = c(
   &quot;AMERICAN.SAMOA&quot;,
   &quot;GUAM&quot;,
@@ -2043,88 +1657,7 @@ title(main = title_sub, adj = 0.5, cex.main = 0.8, line = 1, font = 3, adj = 0)
 par(mar = c(0, 0, 0, 0), family = &quot;mono&quot;)
 plot(NA, xlim = c(0, 1), ylim = c(0, 1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
 legend(x = &quot;center&quot;, legend = break_pnts, col = colpal, pch = 15, ncol = 7, bty = &quot;n&quot;, cex = 0.65, title = &quot;no. of cases, upto&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
-Past versions of unnamed-chunk-9-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-9-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-9-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/measles-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="bubble-charts-rich-vs-health" class="section level2">
 <h2>Bubble charts: Rich vs Health</h2>
@@ -2175,97 +1708,16 @@ bot_cntrs = data[data$country %in% c(&quot;South Africa&quot;, &quot;China&quot;
 text(x = bot_cntrs$logGDP, y = bot_cntrs$`Life expectancy`, labels = bot_cntrs$country, pos = 1, cex = 0.6, col = &quot;#2c2c54&quot;)
 top_cntrs = data[data$country %in% c(&quot;Liberia&quot;, &quot;Timor-Leste&quot;, &quot;Nicaragua&quot;, &quot;Costa Rica&quot;),]
 text(x = top_cntrs$logGDP, y = top_cntrs$`Life expectancy`, labels = top_cntrs$country, pos = 3, cex = 0.6, col = &quot;#2c2c54&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
-Past versions of unnamed-chunk-10-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-10-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-10-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/rich_health-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="donut-charts-wealthiset-percentage" class="section level2">
 <h2>Donut charts: Wealthiset percentage</h2>
 <p>Data obtained from <a
 href="https://www.datawrapper.de/charts">datawrapper</a>.</p>
 <pre class="r"><code>data = read.table(&quot;data/08-donutplot_TopWealth.csv&quot;, sep = &quot;,&quot;, header = TRUE)</code></pre>
-<pre><code>Warning in read.table(&quot;data/08-donutplot_TopWealth.csv&quot;, sep = &quot;,&quot;, header
-= TRUE): incomplete final line found by readTableHeader on &#39;data/08-
-donutplot_TopWealth.csv&#39;</code></pre>
+<pre><code>Warning in read.table(&quot;data/08-donutplot_TopWealth.csv&quot;, sep = &quot;,&quot;, header =
+TRUE): incomplete final line found by readTableHeader on
+&#39;data/08-donutplot_TopWealth.csv&#39;</code></pre>
 <pre class="r"><code>lo =layout(mat = matrix(data = c(1, 1, 1, 2:7), nrow = 3, ncol = 3, byrow = TRUE), heights = c(1.7, 3, 3))
 
 par(mar = c(0, 0, 0, 0))
@@ -2290,88 +1742,7 @@ for (i in 2:ncol(data)) {
   points(x = 0, y = 0, pch = 19, cex = 10, col = &quot;white&quot;, lwd = 0)
   title(main = colnames(data)[i], adj = 0)
 }</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
-Past versions of unnamed-chunk-11-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-11-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-11-1.png" target="_blank">7d5d068</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/top_wealth-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="line-chart-covid19-preprints" class="section level2">
 <h2>Line chart: COVID19 preprints</h2>
@@ -2442,77 +1813,7 @@ lines(smooth.spline(x = 1:nrow(data), y = data$n_articles_medrxiv), col = medrxi
 title(main = &quot;Frequency of COVID19 articles in bioRxiv and medRxiv&quot;, adj = 0, line = 2, col.main = &quot;#34495e&quot;, cex.main = 1)
 
 legend(x = &quot;topleft&quot;, legend = c(&quot;bioRxiv&quot;, &quot;medRxiv&quot;), col = c(biorxiv_col, medrxiv_col), bty = &quot;n&quot;, lwd = 2)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
-Past versions of unnamed-chunk-12-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-12-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-12-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-12-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-12-1.png" target="_blank">91aa770</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-12-1.png" target="_blank">4f94642</a>
-</td>
-<td>
-PoisonAlien
-</td>
-<td>
-2022-07-18
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/covi_rxiv-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="line-chart-cigerate-consumption" class="section level2">
 <h2>Line chart: Cigerate consumption</h2>
@@ -2557,66 +1858,7 @@ for(hghlt_idx in seq_along(hghlt)){
 text(x = data$country[1], y = c(6:4), labels = hghlt, col = hghlt_cols, adj = 0)
 
 axis(side = 1, at = pretty(data$country), labels = pretty(data$country), line = 0, tick = TRUE, col.axis = &quot;#7f8c8d&quot;, col = &quot;#7f8c8d&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
-Past versions of unnamed-chunk-13-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-13-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-13-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-13-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/d8b52662c3fb1eefbe5c4e08204f7f87e5a8191d/docs/figure/baseplots.Rmd/unnamed-chunk-13-1.png" target="_blank">d8b5266</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-22
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/cig_consumption-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="arrow-plot-women-in-parliment" class="section level2">
 <h2>Arrow plot: Women in Parliment</h2>
@@ -2674,55 +1916,7 @@ temp = lapply(split(data, ~group), function(dat){
 bottom_anno = split(data, ~group)[[2]]
 bottom_anno = unlist(bottom_anno[nrow(bottom_anno), c(2, 3)])
 axis(side = 3, at = bottom_anno, labels = c(&quot;2000&quot;, &quot;2020&quot;), tick = FALSE, line = -1, col.axis = &quot;#7f8c8d&quot;, cex.axis = 0.75)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
-Past versions of unnamed-chunk-14-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-14-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-14-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-14-1.png" target="_blank">4906871</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-08-30
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/women_parl-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="dot-plot-oldest-country" class="section level2">
 <h2>Dot plot: Oldest country</h2>
@@ -2792,44 +1986,7 @@ title(
   cex.main = 0.6,
   col.main = &quot;#2c3e50&quot;
 )</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
-Past versions of unnamed-chunk-15-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-15-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-15-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/oldest_country-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="split-barplot-population-pyramid" class="section level2">
 <h2>Split barplot: Population Pyramid</h2>
@@ -2928,44 +2085,7 @@ text(x = max_count, y = nrow(data)+0.45, labels = &quot;female&quot;, adj = 1, c
 title(main = &quot;Population projection for Germany, 2020&quot;, line = 1, adj = 0, col.main = &quot;#2c3e50&quot;)
 title(main = NA, sub = &quot;Projection from 2015\nbased on continued trend with higher immigration
 &quot;, line = 1, font.sub = 3, cex.sub = 0.6, adj = 1, col.sub = &quot;#7f8c8d&quot;)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
-Past versions of unnamed-chunk-16-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-16-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-16-1.png" target="_blank">fe9fcf4</a>
-</td>
-<td>
-Anand
-</td>
-<td>
-2022-10-11
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/baseplots.Rmd/pop_pyramid-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="bar-plot-bechdel-test" class="section level2">
 <h2>Bar plot: Bechdel Test</h2>
@@ -3042,7 +2162,7 @@ for(i in 1:ncol(data)){
     cex = .6, adj = 1, col = &quot;#ecf0f1&quot;
   )
 }</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/Bechdel_test-1.png" width="672" style="display: block; margin: auto;" /></p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -3070,22 +2190,22 @@ other attached packages:
 [1] workflowr_1.7.0
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.9             highr_0.9              compiler_4.2.1        
- [4] pillar_1.8.1           bslib_0.4.0            later_1.3.0           
- [7] git2r_0.30.1           jquerylib_0.1.4        berryFunctions_1.21.14
-[10] tools_4.2.1            getPass_0.2-2          digest_0.6.29         
-[13] jsonlite_1.8.0         evaluate_0.17          tibble_3.1.8          
-[16] lifecycle_1.0.2        pkgconfig_2.0.3        rlang_1.0.6           
-[19] cli_3.4.1              rstudioapi_0.14        yaml_2.3.5            
-[22] xfun_0.33              fastmap_1.1.0          httr_1.4.4            
-[25] stringr_1.4.1          knitr_1.40             fs_1.5.2              
-[28] vctrs_0.4.1            sass_0.4.2             rprojroot_2.0.3       
-[31] data.table_1.14.2      glue_1.6.2             R6_2.5.1              
-[34] processx_3.7.0         fansi_1.0.3            rmarkdown_2.17        
-[37] callr_3.7.2            magrittr_2.0.3         whisker_0.4           
-[40] ps_1.7.1               promises_1.2.0.1       htmltools_0.5.3       
-[43] abind_1.4-5            httpuv_1.6.6           utf8_1.2.2            
-[46] stringi_1.7.8          cachem_1.0.6          </code></pre>
+ [1] Rcpp_1.0.10            highr_0.10             compiler_4.2.1        
+ [4] pillar_1.8.1           bslib_0.4.2            later_1.3.0           
+ [7] git2r_0.31.0           jquerylib_0.1.4        berryFunctions_1.21.14
+[10] tools_4.2.1            getPass_0.2-2          digest_0.6.31         
+[13] jsonlite_1.8.4         evaluate_0.20          lifecycle_1.0.3       
+[16] tibble_3.1.8           pkgconfig_2.0.3        rlang_1.0.6           
+[19] cli_3.6.0              rstudioapi_0.14        yaml_2.3.7            
+[22] xfun_0.37              fastmap_1.1.1          httr_1.4.5            
+[25] stringr_1.5.0          knitr_1.42             fs_1.6.1              
+[28] vctrs_0.5.2            sass_0.4.5             rprojroot_2.0.3       
+[31] data.table_1.14.8      glue_1.6.2             R6_2.5.1              
+[34] processx_3.8.0         fansi_1.0.4            rmarkdown_2.20        
+[37] callr_3.7.3            magrittr_2.0.3         whisker_0.4.1         
+[40] ps_1.7.2               promises_1.2.0.1       htmltools_0.5.4       
+[43] abind_1.4-5            httpuv_1.6.9           utf8_1.2.3            
+[46] stringi_1.7.12         cachem_1.0.7          </code></pre>
 </div>
 </div>
 
