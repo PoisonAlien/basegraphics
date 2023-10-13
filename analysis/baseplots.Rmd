@@ -27,6 +27,88 @@ Following are the major sources of all the recreated plots.
 
 Finally, I apologize in advance for the uncomment code.
 
+## Top Gold Mining Stocks 
+
+Recreating the plot from [visualcapitalist](https://elements.visualcapitalist.com/top-gold-mining-stocks-performed-gdx-2020/)
+
+```{r}
+data = read.delim(file = "data/21-top_gold_mining_stocks.tsv")
+
+
+
+lo = layout(mat = matrix(data = c(1,2,3), ncol = 3, byrow = FALSE), widths = c(2, 5, 2))
+
+par(mar = c(3, 0, 4, 0))
+plot.new()
+```
+
+```{r}
+lo = layout(mat = matrix(data = c(1,2,3), ncol = 3, byrow = FALSE), widths = c(1, 5, 2))
+
+par(mar = c(3, 0, 4, 0))
+plot(NA, xlim = c(0,1), ylim = c(0, 11), axes = FALSE)
+for(i in seq_along(data$Performance)){
+  #rect(xleft = 0, ybottom = i - 0.4, xright = data$Performance[i], ytop = i + 0.4, col = barcols[i], border = NA)  
+  text(x = 0.1, y = i, labels = data$Company[i], font= 2, pos= 4, cex = 1.1, col = "#2c3e50")
+}
+
+barcols = ifelse(test = data$Performance < 0, yes = "#c0392b", no = "#40739e")
+
+par(mar = c(3, 0, 4, 0), bg = "white")
+
+plot(NA, xlim = c(-40, 160), ylim = c(0, 11), axes = FALSE)
+berryFunctions::roundedRect(xleft = -40, ybottom = 0, xright = 160, ytop = 11, col = "gray90", border = NA, rounding = 0.05)
+abline(v = seq(-40, 160, 10), lty = 1, col = "white")
+rect(xleft = c(23, 25.1), ybottom = c(-0.50, -0.50), xright = c(23, 25.1), ytop = c(11, 11), border = c("#f39c12", "#d35400"))
+
+text(y = 11.1, x = c(5, -5), labels = c("BETTER PERFORMANCE", "WORSE PERFORMANCE"), pos = c(4, 2), col =c("#40739e", "#c0392b"), cex = 0.6, font = 2)
+text(y = 11.5, x = seq(-40, 160, 10), label = paste0(seq(-40, 160, 10), "%"), cex = 0.7, xpd = TRUE, font= 2, col = "#34495e")
+text(x = c(23, 25.1), y = -0.3, labels = c("GDX PERFORMANCE 23%","GOLD PERFORMANCE 25.1%"), pos = c(2, 4), cex = 0.65, col =c("#f39c12", "#d35400"), font= 2)
+
+for(i in seq_along(data$Performance)){
+  rect(xleft = 0, ybottom = i - 0.4, xright = data$Performance[i], ytop = i + 0.4, col = barcols[i], border = NA)  
+  text(x = data$Performance[i], y = i, labels = data$Performance[i], pos = ifelse(test = data$Performance[i] < 0, 2, 4), col = barcols[i], font = 2)
+}
+rect(xleft = 0, ybottom = 0, xright = 0, ytop = 11, border = "black")
+
+title(main = "PERFORMANCE OF THE GDX", line = 3, col.main = "#2c3e50")
+title(main = "AND ITS CONSTITUENT STOCKS IN 2020", cex.main = 0.8, col.main = "#34495e")
+
+title(main = NA, sub = "Performance of the 10 companies ranked highest in the GDX index.", line = 1.5, col.sub = "#34495e", font.sub=2)
+
+desc = "The GDX index is market-cap weighted,\nmeaning companies with a larger\nmarket capitalization
+make up more of the index."
+text(x = 30, y = 6, label = desc, pos = 4, cex = 1.2, font = 2)
+
+
+par(mar = c(3, 0, 4, 0))
+plot(NA, xlim = c(0,1), ylim = c(0, 11), axes =FALSE )
+symbols(
+  x = rep(0.5, nrow(data)),
+  y = seq_along(data$Company),
+  circles = rev(sqrt(abs(data$Market_cap / pi))),
+  add = TRUE, inches = 0.6, bg = adjustcolor(col = barcols, 0.6), fg = "white", xpd = TRUE)
+
+for(i in seq_along(data$Performance)){
+  #rect(xleft = 0, ybottom = i - 0.4, xright = data$Performance[i], ytop = i + 0.4, col = barcols[i], border = NA)  
+  text(x = 0, y = i, labels = paste0("$", data$Market_cap[i], "B"), font= 2, pos= 4, cex = 1.7, col = barcols[i])
+}
+text(y = 11.4, x = 0.5, labels = c("MARKET CAP\nUSD"), col =c("#34495e"), cex = 0.6, font = 2, xpd= TRUE)
+
+abline(h = b, lty = 2, col= "gray")
+```
+
+```{r}
+desc = "The GDX index is market-cap weighted,\nmeaning companies with a larger\nmarket capitalization
+make up more of the index."
+
+text(x = 10, y = 7.5, label = desc, pos = 4, cex = 0.6, font = 2)
+
+
+
+```
+
+
 ## Barcode chart: Age group in US 
 
 Recreating barcode chart from [observablehq](https://observablehq.com/@observablehq/plot-barcode?intent=fork)
