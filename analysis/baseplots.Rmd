@@ -27,6 +27,63 @@ Following are the major sources of all the recreated plots.
 
 Finally, I apologize in advance for the uncomment code.
 
+## 2022 student debt
+
+Recreating the plot from [visualcapitalist](https://www.visualcapitalist.com/ranked-median-student-debt-for-a-u-s-bachelors-degree/)
+
+
+```{r stdentdebt, fig.width=10, fig.height=11}
+data = read.delim(file = "data/22-median_2022_student_debt.tsv")
+data$Major = gsub(pattern = "\\n", replacement = "", data$Major)
+#Choose top 20 entries
+top = 40
+d = lapply(split(data, ~degree), function(x) x[1:top,,])[[1]]
+
+#Some heatmap colors
+cols = colorRampPalette(c("#c0392b", "#273c75"))(top)
+cols = adjustcolor(col = cols, 0.8)
+
+study_facs = table(d$Study)
+study_facs_cols = hcl.colors(n = length(study_facs), palette = "Dark 3")
+names(study_facs_cols) = names(study_facs)
+
+par(mar = c(1, 0, 2, 3), fig = c(0,1,0,1))
+plot(NA, xlim = c(-1, max(d$median_debt)), ylim = c(0, top+1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+#abline(v = seq(0, 50, 10), lwd = 0.6, lty = 2, col = "#bdc3c7")
+rect(xleft = 0, ybottom = seq(0, top-1), xright = d$median_debt, ytop = seq(1, top), col = cols, border = "#ecf0f1")
+rect(xleft = -1, ybottom = seq(0, top-1), xright = -0.2, ytop = seq(1, top), col = study_facs_cols[d$Study], border = "#ecf0f1")
+text(x = 0.2, y = seq(0.5, top-0.5, 1), label = d$Major, adj = 0, col = "white", cex = 0.8, font = 2)
+text(x = d$median_debt, y = seq(1, top)-0.5, labels = paste0("$", d$median_debt, "K"), pos = 4, xpd = TRUE, col = "#2c3e50", family = "serif", cex = 0.8)
+
+mtext(text = "2022 Median Debt", side = 1, cex = 1.2, family = "serif", line = -1, font = 2, adj = 1)
+
+title(main = "S T U D E N T - D E B T - R A N K I N G", font.main = 2, family = "mono", cex.main = 2)
+title(main = "U.S. - B A C H E L O R'S - D E G R E E S", font.main = 1, family = "mono", cex.main = 1.2, line = -1)
+
+
+legend(x = 0.7 * max(d$median_debt), y = nrow(d) - 1, legend = names(study_facs_cols), fill = study_facs_cols, ncol = 1, bty = "n", border = NA, title = "Study")
+
+par(fig = c(0.7,1, 0.2, 0.7), new = T)  
+debt_over_time = data.frame(year = c("2005", "2010", "2015", "2020"), public = c(25, 27, 30, 27), private = c(33, 35, 36, 33))
+
+plot(NA, xlim = c(0, 5), ylim = c(24, 40), axes = FALSE)
+abline(h = seq(25, 35, 5), lty = 2, col = "gray")
+points(x = 1:nrow(debt_over_time), y = debt_over_time$public, type = 'b', col = "#27ae60")
+points(x = 1:nrow(debt_over_time), y = debt_over_time$private, type = 'b', col = "#8e44ad")
+
+text(x = 2.5, y = min(debt_over_time$public), label = "Public", font= 2, cex = 0.8, col = "#27ae60")
+text(x = 2.5, y = min(debt_over_time$private), label = "Private", font= 2, cex = 0.8, col = "#8e44ad")
+
+
+text(x = 1:nrow(debt_over_time), y = debt_over_time$public, labels = paste0("$", debt_over_time$public, "K"), pos = 3, cex = 0.6, font= 2)
+text(x = 1:nrow(debt_over_time), y = debt_over_time$private, labels = paste0("$", debt_over_time$private, "K"), pos = 3, cex = 0.6, font= 2)
+text(x = 1:nrow(debt_over_time), y = 24, labels = debt_over_time$year, cex = 0.6, srt = 45)
+
+text(x = 0, y = 39, label = "Avg. debt over time", adj = 0, family = "mono", font = 2)
+box(lty = 5)
+```
+
+
 ## Top Gold Mining Stocks 
 
 Recreating the plot from [visualcapitalist](https://elements.visualcapitalist.com/top-gold-mining-stocks-performed-gdx-2020/)
@@ -242,7 +299,7 @@ Recreating the plot from [d3](https://observablehq.com/@d3/bar-chart-race-explai
 _NOTE_ Although the plots are generated with base code, converting  into a gif requires [ImageMagik](https://imagemagick.org/index.php) to be installed.
 
 
-```{r global_brands}
+```{r global_brands, eval=FALSE}
 data = read.csv(file = "data/16-global_brands.csv")
 single_entries = names(which(table(data$name) == 1))
 data = data[!data$name %in% single_entries,]
