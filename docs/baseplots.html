@@ -14,7 +14,7 @@
 
 <title>Pretty base plots</title>
 
-<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -392,7 +392,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-10-17
+<strong>Last updated:</strong> 2023-11-03
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -523,15 +523,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree01d61ce2783ad5d77cc362b2075d376735cc3b59targetblank01d61cea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree4970d61265ff34d78d3a1930f0a2aa4de6ba061dtargetblank4970d61a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/PoisonAlien/basegraphics/tree/01d61ce2783ad5d77cc362b2075d376735cc3b59" target="_blank">01d61ce</a>
+<a href="https://github.com/PoisonAlien/basegraphics/tree/4970d61265ff34d78d3a1930f0a2aa4de6ba061d" target="_blank">4970d61</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree01d61ce2783ad5d77cc362b2075d376735cc3b59targetblank01d61cea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree4970d61265ff34d78d3a1930f0a2aa4de6ba061dtargetblank4970d61a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -541,7 +541,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/PoisonAlien/basegraphics/tree/01d61ce2783ad5d77cc362b2075d376735cc3b59" target="_blank">01d61ce</a>.
+<a href="https://github.com/PoisonAlien/basegraphics/tree/4970d61265ff34d78d3a1930f0a2aa4de6ba061d" target="_blank">4970d61</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -556,24 +556,11 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
-    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  analysis/dark.css
-    Untracked:  analysis/flatly.css
-    Untracked:  analysis/mint.css
-    Untracked:  code/12-circle_linguisticDiversity.R
-    Untracked:  data/12-circle_linguisticDiversity.tsv
-    Untracked:  data/13-splitbarplot_PopEU.tsv
-    Untracked:  data/15-pieanimate_browserWars_compileData.tsv
-    Untracked:  data/measles.Rds
-    Untracked:  globalbrands.gif
-    Untracked:  pianimate.gif
-
-Unstaged changes:
-    Deleted:    plots.png
+    Untracked:  data/22-median_2022_student_debt.tsv
 
 </code></pre>
 <p>
@@ -619,6 +606,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4970d61265ff34d78d3a1930f0a2aa4de6ba061d/analysis/baseplots.Rmd" target="_blank">4970d61</a>
+</td>
+<td>
+Anand Mayakonda
+</td>
+<td>
+2023-11-03
+</td>
+<td>
+US student debt
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/PoisonAlien/basegraphics/a6bd4337d9d7f414fd85fa57dafb446eca103a96/docs/baseplots.html" target="_blank">a6bd433</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2023-10-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1068,6 +1089,60 @@ href="https://observablehq.com/@observablehq/plot-gallery">observablehq</a></li>
 </ul>
 <p>Finally, I apologize in advance for the uncomment code.</p>
 </div>
+<div id="student-debt" class="section level2">
+<h2>2022 student debt</h2>
+<p>Recreating the plot from <a
+href="https://www.visualcapitalist.com/ranked-median-student-debt-for-a-u-s-bachelors-degree/">visualcapitalist</a></p>
+<pre class="r"><code>data = read.delim(file = &quot;data/22-median_2022_student_debt.tsv&quot;)
+data$Major = gsub(pattern = &quot;\\n&quot;, replacement = &quot;&quot;, data$Major)
+#Choose top 20 entries
+top = 40
+d = lapply(split(data, ~degree), function(x) x[1:top,,])[[1]]
+
+#Some heatmap colors
+cols = colorRampPalette(c(&quot;#c0392b&quot;, &quot;#273c75&quot;))(top)
+cols = adjustcolor(col = cols, 0.8)
+
+study_facs = table(d$Study)
+study_facs_cols = hcl.colors(n = length(study_facs), palette = &quot;Dark 3&quot;)
+names(study_facs_cols) = names(study_facs)
+
+par(mar = c(1, 0, 2, 3), fig = c(0,1,0,1))
+plot(NA, xlim = c(-1, max(d$median_debt)), ylim = c(0, top+1), frame.plot = FALSE, axes = FALSE, xlab = NA, ylab = NA)
+#abline(v = seq(0, 50, 10), lwd = 0.6, lty = 2, col = &quot;#bdc3c7&quot;)
+rect(xleft = 0, ybottom = seq(0, top-1), xright = d$median_debt, ytop = seq(1, top), col = cols, border = &quot;#ecf0f1&quot;)
+rect(xleft = -1, ybottom = seq(0, top-1), xright = -0.2, ytop = seq(1, top), col = study_facs_cols[d$Study], border = &quot;#ecf0f1&quot;)
+text(x = 0.2, y = seq(0.5, top-0.5, 1), label = d$Major, adj = 0, col = &quot;white&quot;, cex = 0.8, font = 2)
+text(x = d$median_debt, y = seq(1, top)-0.5, labels = paste0(&quot;$&quot;, d$median_debt, &quot;K&quot;), pos = 4, xpd = TRUE, col = &quot;#2c3e50&quot;, family = &quot;serif&quot;, cex = 0.8)
+
+mtext(text = &quot;2022 Median Debt&quot;, side = 1, cex = 1.2, family = &quot;serif&quot;, line = -1, font = 2, adj = 1)
+
+title(main = &quot;S T U D E N T - D E B T - R A N K I N G&quot;, font.main = 2, family = &quot;mono&quot;, cex.main = 2)
+title(main = &quot;U.S. - B A C H E L O R&#39;S - D E G R E E S&quot;, font.main = 1, family = &quot;mono&quot;, cex.main = 1.2, line = -1)
+
+
+legend(x = 0.7 * max(d$median_debt), y = nrow(d) - 1, legend = names(study_facs_cols), fill = study_facs_cols, ncol = 1, bty = &quot;n&quot;, border = NA, title = &quot;Study&quot;)
+
+par(fig = c(0.7,1, 0.2, 0.7), new = T)  
+debt_over_time = data.frame(year = c(&quot;2005&quot;, &quot;2010&quot;, &quot;2015&quot;, &quot;2020&quot;), public = c(25, 27, 30, 27), private = c(33, 35, 36, 33))
+
+plot(NA, xlim = c(0, 5), ylim = c(24, 40), axes = FALSE)
+abline(h = seq(25, 35, 5), lty = 2, col = &quot;gray&quot;)
+points(x = 1:nrow(debt_over_time), y = debt_over_time$public, type = &#39;b&#39;, col = &quot;#27ae60&quot;)
+points(x = 1:nrow(debt_over_time), y = debt_over_time$private, type = &#39;b&#39;, col = &quot;#8e44ad&quot;)
+
+text(x = 2.5, y = min(debt_over_time$public), label = &quot;Public&quot;, font= 2, cex = 0.8, col = &quot;#27ae60&quot;)
+text(x = 2.5, y = min(debt_over_time$private), label = &quot;Private&quot;, font= 2, cex = 0.8, col = &quot;#8e44ad&quot;)
+
+
+text(x = 1:nrow(debt_over_time), y = debt_over_time$public, labels = paste0(&quot;$&quot;, debt_over_time$public, &quot;K&quot;), pos = 3, cex = 0.6, font= 2)
+text(x = 1:nrow(debt_over_time), y = debt_over_time$private, labels = paste0(&quot;$&quot;, debt_over_time$private, &quot;K&quot;), pos = 3, cex = 0.6, font= 2)
+text(x = 1:nrow(debt_over_time), y = 24, labels = debt_over_time$year, cex = 0.6, srt = 45)
+
+text(x = 0, y = 39, label = &quot;Avg. debt over time&quot;, adj = 0, family = &quot;mono&quot;, font = 2)
+box(lty = 5)</code></pre>
+<p><img src="figure/baseplots.Rmd/stdentdebt-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
 <div id="top-gold-mining-stocks" class="section level2">
 <h2>Top Gold Mining Stocks</h2>
 <p>Recreating the plot from <a
@@ -1130,6 +1205,43 @@ for(i in seq_along(data$Performance)){
 }
 text(y = 11.4, x = 0.5, labels = c(&quot;MARKET CAP\nUSD&quot;), col =c(&quot;#34495e&quot;), cex = 0.8, font = 2, xpd= TRUE)</code></pre>
 <p><img src="figure/baseplots.Rmd/goldstocks-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-goldstocks-1">
+Past versions of goldstocks-1.png
+</button>
+</p>
+<div id="fig-goldstocks-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/a6bd4337d9d7f414fd85fa57dafb446eca103a96/docs/figure/baseplots.Rmd/goldstocks-1.png" target="_blank">a6bd433</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2023-10-17
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="barcode-chart-age-group-in-us" class="section level2">
 <h2>Barcode chart: Age group in US</h2>
@@ -3259,7 +3371,7 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.2.1 (2022-06-23)
+<pre><code>R version 4.2.3 (2023-03-15)
 Platform: x86_64-apple-darwin17.0 (64-bit)
 Running under: macOS Big Sur ... 10.16
 
@@ -3277,22 +3389,22 @@ other attached packages:
 [1] workflowr_1.7.0
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.10            highr_0.10             compiler_4.2.1        
- [4] pillar_1.9.0           bslib_0.4.2            later_1.3.0           
- [7] git2r_0.31.0           jquerylib_0.1.4        berryFunctions_1.21.14
-[10] tools_4.2.1            getPass_0.2-2          digest_0.6.31         
-[13] jsonlite_1.8.4         evaluate_0.20          lifecycle_1.0.3       
-[16] tibble_3.2.1           pkgconfig_2.0.3        rlang_1.1.1           
-[19] cli_3.6.0              rstudioapi_0.14        yaml_2.3.7            
-[22] xfun_0.37              fastmap_1.1.1          httr_1.4.5            
-[25] stringr_1.5.0          knitr_1.42             fs_1.6.1              
-[28] vctrs_0.6.3            sass_0.4.5             rprojroot_2.0.3       
-[31] data.table_1.14.8      glue_1.6.2             R6_2.5.1              
-[34] processx_3.8.0         fansi_1.0.4            rmarkdown_2.20        
-[37] callr_3.7.3            magrittr_2.0.3         whisker_0.4.1         
-[40] ps_1.7.2               promises_1.2.0.1       htmltools_0.5.4       
-[43] abind_1.4-5            httpuv_1.6.9           utf8_1.2.3            
-[46] stringi_1.7.12         cachem_1.0.7          </code></pre>
+ [1] Rcpp_1.0.10           highr_0.10            compiler_4.2.3       
+ [4] pillar_1.9.0          bslib_0.4.2           later_1.3.0          
+ [7] git2r_0.31.0          jquerylib_0.1.4       berryFunctions_1.22.0
+[10] tools_4.2.3           getPass_0.2-2         digest_0.6.31        
+[13] jsonlite_1.8.4        evaluate_0.20         lifecycle_1.0.3      
+[16] tibble_3.2.1          pkgconfig_2.0.3       rlang_1.1.0          
+[19] cli_3.6.1             rstudioapi_0.14       yaml_2.3.7           
+[22] xfun_0.38             fastmap_1.1.1         httr_1.4.5           
+[25] stringr_1.5.0         knitr_1.42            fs_1.6.1             
+[28] vctrs_0.6.1           sass_0.4.5            rprojroot_2.0.3      
+[31] data.table_1.14.8     glue_1.6.2            R6_2.5.1             
+[34] processx_3.8.0        fansi_1.0.4           rmarkdown_2.21       
+[37] callr_3.7.3           magrittr_2.0.3        whisker_0.4.1        
+[40] ps_1.7.3              promises_1.2.0.1      htmltools_0.5.5      
+[43] abind_1.4-5           httpuv_1.6.9          utf8_1.2.3           
+[46] stringi_1.7.12        cachem_1.0.7         </code></pre>
 </div>
 </div>
 
