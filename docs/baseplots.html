@@ -14,7 +14,7 @@
 
 <title>Pretty base plots</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -392,7 +392,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-11-03
+<strong>Last updated:</strong> 2023-12-04
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -523,15 +523,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree4970d61265ff34d78d3a1930f0a2aa4de6ba061dtargetblank4970d61a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9targetblank519daafa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/PoisonAlien/basegraphics/tree/4970d61265ff34d78d3a1930f0a2aa4de6ba061d" target="_blank">4970d61</a>
+<a href="https://github.com/PoisonAlien/basegraphics/tree/519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9" target="_blank">519daaf</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree4970d61265ff34d78d3a1930f0a2aa4de6ba061dtargetblank4970d61a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9targetblank519daafa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -541,7 +541,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/PoisonAlien/basegraphics/tree/4970d61265ff34d78d3a1930f0a2aa4de6ba061d" target="_blank">4970d61</a>.
+<a href="https://github.com/PoisonAlien/basegraphics/tree/519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9" target="_blank">519daaf</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -560,7 +560,8 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  data/22-median_2022_student_debt.tsv
+    Untracked:  data/23-G7_vs_BRCIS_GDP.tsv
+    Untracked:  data/23-marvel_boxoffocie.tsv
 
 </code></pre>
 <p>
@@ -606,6 +607,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9/analysis/baseplots.Rmd" target="_blank">519daaf</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2023-12-04
+</td>
+<td>
+workflowr::wflow_publish(files = "analysis/baseplots.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/PoisonAlien/basegraphics/1d87f6c0c0e1730ed912c61387bd30fda4701db5/docs/baseplots.html" target="_blank">1d87f6c</a>
+</td>
+<td>
+Anand Mayakonda
+</td>
+<td>
+2023-11-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1089,6 +1124,267 @@ href="https://observablehq.com/@observablehq/plot-gallery">observablehq</a></li>
 </ul>
 <p>Finally, I apologize in advance for the uncomment code.</p>
 </div>
+<div id="brics-vs-g7-gdp" class="section level2">
+<h2>BRICS vs G7 GDP</h2>
+<p>Recreating the plot from <a
+href="https://www.visualcapitalist.com/charted-comparing-the-gdp-of-brics-and-the-g7-countries/">visualcapitalist</a></p>
+<p>Before drawing the plot, we need to implement treemap algorithm. <a
+href="https://github.com/laserson/squarify">squarify</a> by <a
+href="https://github.com/laserson">Uri Laserson</a> does it in pure
+python. Below I have transpiled the python code into R. I have also made
+some modifications to make it usable in R.</p>
+<pre class="r"><code># Squarified Treemap Layout
+# Implements algorithm from Bruls, Huizing, van Wijk, &quot;Squarified Treemaps&quot;
+
+pad_rectangle = function(rect) {
+  if (rect$dx &gt; 2) {
+    rect$x = rect$x + 1
+    rect$dx = rect$dx - 2
+  }
+  if (rect$dy &gt; 2) {
+    rect$y = rect$y + 1
+    rect$dy = rect$dy - 2
+  }
+}
+
+layoutrow = function(sizes, x, y, dx, dy) {
+  covered_area = sum(sizes)
+  width = covered_area / dy
+  rects = list()
+  for (size in sizes) {
+    rects = c(rects, list(list(x = x, y = y, dx = width, dy = size / width)))
+    y = y + size / width
+  }
+  return(rects)
+}
+
+layoutcol = function(sizes, x, y, dx, dy) {
+  covered_area = sum(sizes)
+  height = covered_area / dx
+  rects = list()
+  for (size in sizes) {
+    rects = c(rects, list(list(x = x, y = y, dx = size / height, dy = height)))
+    x = x + size / height
+  }
+  return(rects)
+}
+
+layoutMain = function(sizes, x, y, dx, dy) {
+  if (dx &gt;= dy) {
+    return(layoutrow(sizes, x, y, dx, dy))
+  } else {
+    return(layoutcol(sizes, x, y, dx, dy))
+  }
+}
+
+leftoverrow = function(sizes, x, y, dx, dy) {
+  covered_area = sum(sizes)
+  width = covered_area / dy
+  leftover_x = x + width
+  leftover_y = y
+  leftover_dx = dx - width
+  leftover_dy = dy
+  return(list(leftover_x, leftover_y, leftover_dx, leftover_dy))
+}
+
+leftovercol = function(sizes, x, y, dx, dy) {
+  covered_area = sum(sizes)
+  height = covered_area / dx
+  leftover_x = x
+  leftover_y = y + height
+  leftover_dx = dx
+  leftover_dy = dy - height
+  return(list(leftover_x, leftover_y, leftover_dx, leftover_dy))
+}
+
+leftover = function(sizes, x, y, dx, dy) {
+  if (dx &gt;= dy) {
+    return(leftoverrow(sizes, x, y, dx, dy))
+  } else {
+    return(leftovercol(sizes, x, y, dx, dy))
+  }
+}
+
+worst_ratio = function(sizes, x, y, dx, dy) {
+  rects = layoutMain(sizes, x, y, dx, dy)
+  return(max(sapply(rects, function(rect) {
+    max(rect$dx / rect$dy, rect$dy / rect$dx)
+  })))
+}
+
+squarify_main = function(sizes, x, y, dx, dy) {
+  sizes = as.numeric(sizes)
+
+  if (length(sizes) == 0) {
+    return(list())
+  }
+
+  if (length(sizes) == 1) {
+    return(layoutMain(sizes, x, y, dx, dy))
+  }
+
+  i = 1
+  while (i &lt; length(sizes) &amp;&amp; worst_ratio(sizes[1:i], x, y, dx, dy) &gt;= worst_ratio(sizes[1:(i + 1)], x, y, dx, dy)) {
+    i = i + 1
+  }
+  current = sizes[1:i]
+  remaining = sizes[(i + 1):length(sizes)]
+
+  leftover_info = leftover(current, x, y, dx, dy)
+  leftover_x = leftover_info[[1]]
+  leftover_y = leftover_info[[2]]
+  leftover_dx = leftover_info[[3]]
+  leftover_dy = leftover_info[[4]]
+
+  return(c(layoutMain(current, x, y, dx, dy), squarify_main(remaining, leftover_x, leftover_y, leftover_dx, leftover_dy)))
+}
+
+padded_squarify = function(sizes, x, y, dx, dy) {
+  rects = squarify(sizes, x, y, dx, dy)
+  for (rect in rects) {
+    pad_rectangle(rect)
+  }
+  return(rects)
+}
+
+normalize_sizes = function(sizes, dx, dy) {
+  total_size = sum(sizes)
+  total_area = dx * dy
+  sizes = sizes * (total_area / total_size)
+  return(sizes)
+}
+
+#&#39; Treemap in base R
+#&#39; @details Plot treemaps in base R
+#&#39; This function is a direct transpilation of python [squarify](https://github.com/laserson/squarify) package by [Uri Laserson](https://github.com/laserson)
+#&#39; @param X numeric vectors of values
+#&#39; @param labels a character vector specifying the text to be written for each value in X. Default NULL.
+#&#39; @param sub_labels a character vector specifying the sub-text to be written for each value in X. Default NULL.
+#&#39; @param fontSize numeric character expansion factor. Default 1
+#&#39; @param col colors. If colors is longer than x, the coordinates are recycled to the length of labels.
+#&#39; @param alpha Default 1
+#&#39; @param show_val Default TRUE.
+#&#39; @param show_pct Default FALSE.
+#&#39; @param text_col Default #2c3e50
+#&#39; @param sub_text_col Default #34495e
+#&#39; @param borderCol Default NULL
+#&#39; @param text_font Font type. Default 1. Can be 1, 2 (bold), 3 (italic), 4 (bold-italic)
+#&#39; @param sub_text_font Font type. Default 1. Can be 1, 2 (bold), 3 (italic), 4 (bold-italic)
+
+
+squarify = function(X, labels = NULL, sub_labels = NULL, fontSize = 1, col = NULL, alpha = 1, show_val = TRUE,
+                    show_pct = FALSE, text_col = &quot;#2c3e50&quot;, sub_text_col = &quot;#34495e&quot;,
+                    borderCol = NULL, text_font = 1, sub_text_font = 1){
+  x &lt;- 0  # X-coordinate of the origin
+  y &lt;- 0  # Y-coordinate of the origin
+  dx &lt;- 100  # Full width of the treemap
+  dy &lt;- 100  # Full height of the treemap
+
+  sizes_norm &lt;- X / sum(X) * dx * dy  # Normalize the sizes
+
+  if(is.null(col)){
+    col = hcl.colors(n = length(X), palette = &quot;Dark2&quot;)
+  }else if(length(col) != length(X)){
+    col = rep(col, length(X))
+  }
+
+  if(length(text_col) != length(X)){
+    text_col = rep(text_col, length(X))
+  }
+
+  if(length(sub_text_col) != length(X)){
+    sub_text_col = rep(sub_text_col, length(X))
+  }
+
+  col = grDevices::adjustcolor(col = col, alpha.f = alpha)
+
+  # Compute the treemap rectangles
+  rectangles &lt;- squarify_main(sizes_norm, x, y, dx, dy)
+
+
+  # Function to draw a rectangle
+  draw_rect &lt;- function(x, y, dx, dy, col, ...) {
+    rect(x, y, x + dx, y + dy, col = col, ...)
+  }
+
+  # Function to draw text inside the rectangle
+  draw_text &lt;- function(x, y, dx, dy, label, fs = 1, ...) {
+    text(x + dx / 2, y + dy / 2, label, cex = fs, xpd = TRUE, ...)
+  }
+
+  draw_text_sub &lt;- function(x, y, dx, dy, label, fs = 1, ...) {
+    text(x + dx/2, y + dy / 2, label, cex = fs * 0.8, pos = 1, xpd = TRUE, ...)
+  }
+
+  if(is.null(labels)){
+    labels = seq_along(X)
+  }
+
+  plot(NA, xlim = c(0, dx), ylim = c(0, dy), xlab = &quot;&quot;, ylab = &quot;&quot;, xaxt = &quot;n&quot;, yaxt = &quot;n&quot;, frame.plot = FALSE)
+
+  if(is.null(sub_labels)){
+    sub_text = paste0(X)
+  }else{
+    sub_text = sub_labels
+  }
+
+  if(show_pct){
+    sub_text = paste0(sub_text,  &quot; [&quot;, round(X/sum(X) * 100, 2), &quot;%]&quot;)
+  }
+
+  #print(rectangles)
+  for (i in seq_along(rectangles)) {
+    rect_info &lt;- rectangles[[i]]
+    draw_rect(rect_info$x, rect_info$y, rect_info$dx, rect_info$dy, col[i], border = borderCol)
+    draw_text(rect_info$x, rect_info$y, rect_info$dx, rect_info$dy, labels[i], fs = fontSize, col = text_col[i], font = text_font) # Use original sizes
+    if(show_val){
+      draw_text_sub(rect_info$x, rect_info$y, rect_info$dx, rect_info$dy, sub_text[i], fs = fontSize, col = sub_text_col[i], font = sub_text_font) # Use original sizes
+    }
+  }
+}</code></pre>
+<pre class="r"><code>g7 = c(26.85, 4.41, 4.30, 3.15, 2.92, 2.17, 2.09)
+g7_countries = c(&quot;U.S.&quot;, &quot;Japan&quot;, &quot;Germany&quot;, &quot;UK&quot;, &quot;France&quot;, &quot;Italy&quot;, &quot;Canada&quot;)
+
+brics = c(19.37, 3.73, 2.08, 2.06, 0.39)
+brics_countries = c(&quot;China&quot;, &quot;India&quot;, &quot;Brazil&quot;, &quot;Russia&quot;, &quot;SA&quot;)
+
+layout(mat = matrix(c(1,2,3,3), nrow = 2, byrow = TRUE), heights = c(5, 1))
+par(mar = c(0, 0, 1, 0), family = &quot;mono&quot;, bg = &quot;#ecf0f1&quot;)
+squarify(
+  X = g7,
+  labels = g7_countries,
+  col = &quot;#273c75&quot;,
+  alpha = 0.9,
+  text_col = &quot;white&quot;,
+  borderCol = &quot;white&quot;,
+  sub_labels = paste0(g7, &quot;T&quot;),
+  sub_text_col = &quot;white&quot;,
+  text_font = 2
+)
+title(main = &quot;G7 $45.89T total&quot;, font = 2, col.main = &quot;#273c75&quot;, line = 0)
+
+squarify(
+  X = brics,
+  labels = brics_countries,
+  col = &quot;#c23616&quot;,
+  alpha = 0.9,
+  text_col = &quot;white&quot;,
+  borderCol = &quot;white&quot;,
+  sub_labels = paste0(brics, &quot;T&quot;),
+  sub_text_col = &quot;white&quot;,
+  text_font = 2
+)
+title(main = &quot;BRICS $27.63T total&quot;, font = 2, col.main = &quot;#c23616&quot;, line = 0)
+
+plot(x = NA, y = NA, type = &quot;n&quot;, xlim = c(0,1), ylim = c(0,1), axes = FALSE)
+title(main = &quot;[GDP comparison]&quot;, cex.main = 2.5, font.main = 1, line = -1, col.main = &quot;#2c3e50&quot;)
+title(main = &quot;[G7 vs BRICS]&quot;, cex.main = 3.8, font.main = 2, line = -4, col.main = &quot;#2c3e50&quot;)</code></pre>
+<p><img src="figure/baseplots.Rmd/g7vsbrics-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>If you like the above plot, I have wrapped up the code in a little R
+package called <a
+href="https://github.com/PoisonAlien/squaRify">squaRify</a> that you
+might find useful.</p>
+</div>
 <div id="student-debt" class="section level2">
 <h2>2022 student debt</h2>
 <p>Recreating the plot from <a
@@ -1142,6 +1438,43 @@ text(x = 1:nrow(debt_over_time), y = 24, labels = debt_over_time$year, cex = 0.6
 text(x = 0, y = 39, label = &quot;Avg. debt over time&quot;, adj = 0, family = &quot;mono&quot;, font = 2)
 box(lty = 5)</code></pre>
 <p><img src="figure/baseplots.Rmd/stdentdebt-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-stdentdebt-1">
+Past versions of stdentdebt-1.png
+</button>
+</p>
+<div id="fig-stdentdebt-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/1d87f6c0c0e1730ed912c61387bd30fda4701db5/docs/figure/baseplots.Rmd/stdentdebt-1.png" target="_blank">1d87f6c</a>
+</td>
+<td>
+Anand Mayakonda
+</td>
+<td>
+2023-11-03
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="top-gold-mining-stocks" class="section level2">
 <h2>Top Gold Mining Stocks</h2>
@@ -3371,7 +3704,7 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.2.3 (2023-03-15)
+<pre><code>R version 4.2.1 (2022-06-23)
 Platform: x86_64-apple-darwin17.0 (64-bit)
 Running under: macOS Big Sur ... 10.16
 
@@ -3389,22 +3722,22 @@ other attached packages:
 [1] workflowr_1.7.0
 
 loaded via a namespace (and not attached):
- [1] Rcpp_1.0.10           highr_0.10            compiler_4.2.3       
- [4] pillar_1.9.0          bslib_0.4.2           later_1.3.0          
- [7] git2r_0.31.0          jquerylib_0.1.4       berryFunctions_1.22.0
-[10] tools_4.2.3           getPass_0.2-2         digest_0.6.31        
-[13] jsonlite_1.8.4        evaluate_0.20         lifecycle_1.0.3      
-[16] tibble_3.2.1          pkgconfig_2.0.3       rlang_1.1.0          
-[19] cli_3.6.1             rstudioapi_0.14       yaml_2.3.7           
-[22] xfun_0.38             fastmap_1.1.1         httr_1.4.5           
-[25] stringr_1.5.0         knitr_1.42            fs_1.6.1             
-[28] vctrs_0.6.1           sass_0.4.5            rprojroot_2.0.3      
-[31] data.table_1.14.8     glue_1.6.2            R6_2.5.1             
-[34] processx_3.8.0        fansi_1.0.4           rmarkdown_2.21       
-[37] callr_3.7.3           magrittr_2.0.3        whisker_0.4.1        
-[40] ps_1.7.3              promises_1.2.0.1      htmltools_0.5.5      
-[43] abind_1.4-5           httpuv_1.6.9          utf8_1.2.3           
-[46] stringi_1.7.12        cachem_1.0.7         </code></pre>
+ [1] Rcpp_1.0.10            highr_0.10             compiler_4.2.1        
+ [4] pillar_1.9.0           bslib_0.4.2            later_1.3.0           
+ [7] git2r_0.31.0           jquerylib_0.1.4        berryFunctions_1.21.14
+[10] tools_4.2.1            getPass_0.2-2          digest_0.6.31         
+[13] jsonlite_1.8.4         evaluate_0.20          lifecycle_1.0.3       
+[16] tibble_3.2.1           pkgconfig_2.0.3        rlang_1.1.1           
+[19] cli_3.6.0              rstudioapi_0.14        yaml_2.3.7            
+[22] xfun_0.37              fastmap_1.1.1          httr_1.4.5            
+[25] stringr_1.5.0          knitr_1.42             fs_1.6.1              
+[28] vctrs_0.6.3            sass_0.4.5             rprojroot_2.0.3       
+[31] data.table_1.14.8      glue_1.6.2             R6_2.5.1              
+[34] processx_3.8.0         fansi_1.0.4            rmarkdown_2.20        
+[37] callr_3.7.3            magrittr_2.0.3         whisker_0.4.1         
+[40] ps_1.7.2               promises_1.2.0.1       htmltools_0.5.4       
+[43] abind_1.4-5            httpuv_1.6.9           utf8_1.2.3            
+[46] stringi_1.7.12         cachem_1.0.7          </code></pre>
 </div>
 </div>
 
