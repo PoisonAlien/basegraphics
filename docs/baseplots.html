@@ -392,7 +392,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-12-04
+<strong>Last updated:</strong> 2023-12-09
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -523,15 +523,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9targetblank519daafa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstreec95caf4ee8dba6bb0de95f738f2d0be3197f0aa6targetblankc95caf4a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/PoisonAlien/basegraphics/tree/519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9" target="_blank">519daaf</a>
+<a href="https://github.com/PoisonAlien/basegraphics/tree/c95caf4ee8dba6bb0de95f738f2d0be3197f0aa6" target="_blank">c95caf4</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstree519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9targetblank519daafa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomPoisonAlienbasegraphicstreec95caf4ee8dba6bb0de95f738f2d0be3197f0aa6targetblankc95caf4a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -541,7 +541,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/PoisonAlien/basegraphics/tree/519daafc6c48b01a2cc6f24ec1d4cc03719ff7a9" target="_blank">519daaf</a>.
+<a href="https://github.com/PoisonAlien/basegraphics/tree/c95caf4ee8dba6bb0de95f738f2d0be3197f0aa6" target="_blank">c95caf4</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -607,6 +607,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/c95caf4ee8dba6bb0de95f738f2d0be3197f0aa6/analysis/baseplots.Rmd" target="_blank">c95caf4</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2023-12-09
+</td>
+<td>
+workflowr::wflow_publish(files = "analysis/baseplots.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/PoisonAlien/basegraphics/271b17fd55b37ffb19809119a65bcd60486a3939/docs/baseplots.html" target="_blank">271b17f</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2023-12-04
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1122,7 +1156,152 @@ accessible/open</p>
 <li><a
 href="https://observablehq.com/@observablehq/plot-gallery">observablehq</a></li>
 </ul>
-<p>Finally, I apologize in advance for the uncomment code.</p>
+<p>Finally, I apologize in advance for the uncommented code.</p>
+</div>
+<div id="marvel-box-office" class="section level2">
+<h2>Marvel Box Office</h2>
+<p>Recreating the plot from <a
+href="https://www.visualcapitalist.com/charted-marvel-box-office/">visualcapitalist</a></p>
+<pre class="r"><code>data = read.delim(file = &quot;data/23-marvel_boxoffocie.tsv&quot;)
+
+layout(mat = matrix(data = c(1,2), nrow = 2), heights = c(6, 2))
+
+#Box-office scores
+par(bg = &quot;#34495e&quot;, mar = c(8, 3, 1.2, 1)) #636e72
+phase_cols = hcl.colors(n = 5, palette = &quot;Dark 2&quot;, alpha = 0.8)
+
+b = barplot(height = data$Box_OfficeWorldwide, col = phase_cols[data$phase], border = &quot;#ecf0f1&quot;, axes = FALSE, ylim = c(-100, 2800))
+text(x = b, y = -100, labels = data$Film, srt = 45, adj = 1, xpd = TRUE, col = &quot;#ecf0f1&quot;, cex = 0.6)
+points(x = b, y = data$Production_Budget, col = &quot;#f1c40f&quot;, type = &quot;p&quot;, cex = 0.3, pch = 19)
+points(x = b, y = data$Opening_WeekendDomestic, col = &quot;red&quot;, type = &quot;p&quot;, cex = 0.3, pch = 19)
+
+title(main = &quot;MARVEL STUDIOS&quot;, adj = 0, col.main = &quot;#ecf0f1&quot;, font.main = 1, line = 0.2)
+title(main = &quot;BOX OFFICE NUMBERS&quot;, adj = 0, col.main = &quot;#ecf0f1&quot;, font.main = 1, line = -0.8, cex.main = 0.93)
+
+rect(xleft = 0, ybottom = 1000, xright = max(b), ytop = 1000, border = &quot;#ecf0f1&quot;, lty = 2)
+text(x = 0, y = 1000, labels = &quot;$1B&quot;, pos = 2, xpd = TRUE, col = &quot;#ecf0f1&quot;, cex = 0.8)
+rect(xleft = 0, ybottom = 2000, xright = max(b), ytop = 2000, border = &quot;#ecf0f1&quot;, lty = 2)
+text(x = 0, y = 2000, labels = &quot;$2B&quot;, pos = 2, xpd = TRUE, col = &quot;#ecf0f1&quot;, cex = 0.8)
+text(x = b[25], y = 500, labels = &quot;Pandemic\nreleases&quot;, pos = 3, cex = 0.6, col = &quot;#ecf0f1&quot;)
+
+legend(x = &quot;topright&quot;, ncol = 5, col = phase_cols, legend = 1:5, title = &quot;PHASE&quot;, bty = &quot;n&quot;, pch = 15, xpd = TRUE, text.col = &quot;#ecf0f1&quot;, pt.cex = 1.2, cex = 0.7)
+text(x = 0, y = 250, labels = &quot;Budget&quot;, pos = 2, xpd = TRUE, col = &quot;#f1c40f&quot;, cex = 0.6)
+text(x = 0, y = 100, labels = &quot;Opening&quot;, pos = 2, xpd = TRUE, col = &quot;red&quot;, cex = 0.6)
+
+#Tomatometer scores
+data$tomatometer = cut(data$Review_ScoreRotten_Tomatoes, breaks = c(0, 60, 75, 100), labels = c(&quot;Rotten&quot;, &quot;Fresh&quot;, &quot;Certified_Fresh&quot;))
+tomatometer_cols = c(&quot;#2ecc71&quot;, &quot;#d35400&quot;, &quot;#f39c12&quot;)
+names(tomatometer_cols) = c(&quot;Rotten&quot;, &quot;Fresh&quot;, &quot;Certified_Fresh&quot;)
+
+par(bg = &quot;#34495e&quot;, mar = c(0, 3, 0, 1))
+plot(x = b, y = data$Review_ScoreRotten_Tomatoes, type = &quot;l&quot;, ylim = c(30, 100),axes = FALSE, col = &quot;#95a5a6&quot;)
+points(x = b, y = data$Review_ScoreRotten_Tomatoes, type = &quot;p&quot;, col = tomatometer_cols[data$tomatometer], pch = 19, cex = 0.6)
+rect(xleft = 0, ybottom = 60, xright = max(b), ytop = 60, border = tomatometer_cols[&quot;Rotten&quot;], lty = 2)
+text(x = 0, y = 60, labels = &quot;Rotten&quot;, pos = 2, xpd = TRUE, col = tomatometer_cols[&quot;Rotten&quot;], cex = 0.7)
+text(x = max(b), y = 60, labels = &quot;&lt;60%&quot;, pos = 4, xpd = TRUE, col = tomatometer_cols[&quot;Rotten&quot;], cex = 0.7)
+rect(xleft = 0, ybottom = 75, xright = max(b), ytop = 75, border = tomatometer_cols[&quot;Certified_Fresh&quot;], lty = 2)
+text(x = 0, y = 75, labels = &quot;Certified\nFresh&quot;, pos = 2, xpd = TRUE, col = tomatometer_cols[&quot;Certified_Fresh&quot;], cex = 0.7)
+text(x = max(b), y = 75, labels = &quot;&gt;75%&quot;, pos = 4, xpd = TRUE, col = tomatometer_cols[&quot;Certified_Fresh&quot;], cex = 0.7)
+
+text(x = 10, y = 30, labels = &quot;ROTTEN TOMATOES CRTIC RATINGS&quot;, pos = 3, adj = 0, col = &quot;#ecf0f1&quot;, cex = 0.8)
+
+max_idx = which(data$Review_ScoreRotten_Tomatoes == max(data$Review_ScoreRotten_Tomatoes))
+max_score = data[max_idx, &quot;Review_ScoreRotten_Tomatoes&quot;]
+max_xpos = b[max_idx,]
+text(x = max_xpos, y = max_score, label = paste0(max_score, &quot;%\nHigh&quot;), col = &quot;#ecf0f1&quot;, pos = 4, cex = 0.5)</code></pre>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-1-1.png" width="720" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
+Past versions of unnamed-chunk-1-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/e3f28b268d15552b382cacae648071f949a21305/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">e3f28b2</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2023-04-12
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">fe9fcf4</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-10-11
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">4906871</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-30
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">91aa770</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2022-08-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">4f94642</a>
+</td>
+<td>
+PoisonAlien
+</td>
+<td>
+2022-07-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">7d5d068</a>
+</td>
+<td>
+PoisonAlien
+</td>
+<td>
+2022-07-16
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="brics-vs-g7-gdp" class="section level2">
 <h2>BRICS vs G7 GDP</h2>
@@ -1380,6 +1559,43 @@ plot(x = NA, y = NA, type = &quot;n&quot;, xlim = c(0,1), ylim = c(0,1), axes = 
 title(main = &quot;[GDP comparison]&quot;, cex.main = 2.5, font.main = 1, line = -1, col.main = &quot;#2c3e50&quot;)
 title(main = &quot;[G7 vs BRICS]&quot;, cex.main = 3.8, font.main = 2, line = -4, col.main = &quot;#2c3e50&quot;)</code></pre>
 <p><img src="figure/baseplots.Rmd/g7vsbrics-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-g7vsbrics-1">
+Past versions of g7vsbrics-1.png
+</button>
+</p>
+<div id="fig-g7vsbrics-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/271b17fd55b37ffb19809119a65bcd60486a3939/docs/figure/baseplots.Rmd/g7vsbrics-1.png" target="_blank">271b17f</a>
+</td>
+<td>
+Anand
+</td>
+<td>
+2023-12-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>If you like the above plot, I have wrapped up the code in a little R
 package called <a
 href="https://github.com/PoisonAlien/squaRify">squaRify</a> that you
@@ -1717,13 +1933,13 @@ lbs = c(&quot;Electrolyzers&quot;, &quot;Heat Pumps&quot;, &quot;Fuel cell\nTruc
         &quot;Onshore\nWind&quot;, &quot;Offshore\nWind&quot;)
 text(x = 0, y = c(0.25, 1.5, 3, 6, 9.5, 12.5, 15.5), labels = lbs, adj = 1, xpd = NA, cex = 0.7, pos = 4, font = 2)
 rect(xleft = -200, ybottom = cumsum(rev(at_lines))-0.03, xright = 100, ytop = cumsum(rev(at_lines)), border = NA, col = &quot;white&quot;, xpd = TRUE)</code></pre>
-<p><img src="figure/baseplots.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/baseplots.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-1-1">
-Past versions of unnamed-chunk-1-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-2-1">
+Past versions of unnamed-chunk-2-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-1-1" class="collapse">
+<div id="fig-unnamed-chunk-2-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1742,18 +1958,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/e3f28b268d15552b382cacae648071f949a21305/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">e3f28b2</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/bb723cc53bbbe0cd5f718a074c6d46dc61cbc5c4/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">bb723cc</a>
 </td>
 <td>
 Anand
 </td>
 <td>
-2023-04-12
+2022-10-16
 </td>
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">fe9fcf4</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/fe9fcf40112daf52df412e1e599b745354283407/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">fe9fcf4</a>
 </td>
 <td>
 Anand
@@ -1764,7 +1980,7 @@ Anand
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">4906871</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4906871a36427438489479aec46a69ffb851fb77/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">4906871</a>
 </td>
 <td>
 Anand
@@ -1775,7 +1991,7 @@ Anand
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">91aa770</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/91aa770f3b15ed143b8e60534c0f8a956e656d12/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">91aa770</a>
 </td>
 <td>
 Anand
@@ -1786,7 +2002,7 @@ Anand
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">4f94642</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/4f94642156b02834a405e9b653bc4505e1d8e179/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">4f94642</a>
 </td>
 <td>
 PoisonAlien
@@ -1797,7 +2013,7 @@ PoisonAlien
 </tr>
 <tr>
 <td>
-<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-1-1.png" target="_blank">7d5d068</a>
+<a href="https://github.com/PoisonAlien/basegraphics/blob/7d5d068a54e8378298c8a22bf85b1b00a23a9d5f/docs/figure/baseplots.Rmd/unnamed-chunk-2-1.png" target="_blank">7d5d068</a>
 </td>
 <td>
 PoisonAlien
