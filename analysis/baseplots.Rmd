@@ -25,7 +25,63 @@ Following are the major sources of all the recreated plots.
   * [datawrapper](https://www.datawrapper.de/charts)
   * [observablehq](https://observablehq.com/@observablehq/plot-gallery)
 
-Finally, I apologize in advance for the uncomment code.
+Finally, I apologize in advance for the uncommented code.
+
+## Marvel Box Office
+
+Recreating the plot from [visualcapitalist](https://www.visualcapitalist.com/charted-marvel-box-office/)
+
+
+```{r, fig.width=7.5, fig.height=5.5}
+data = read.delim(file = "data/23-marvel_boxoffocie.tsv")
+
+layout(mat = matrix(data = c(1,2), nrow = 2), heights = c(6, 2))
+
+#Box-office scores
+par(bg = "#34495e", mar = c(8, 3, 1.2, 1)) #636e72
+phase_cols = hcl.colors(n = 5, palette = "Dark 2", alpha = 0.8)
+
+b = barplot(height = data$Box_OfficeWorldwide, col = phase_cols[data$phase], border = "#ecf0f1", axes = FALSE, ylim = c(-100, 2800))
+text(x = b, y = -100, labels = data$Film, srt = 45, adj = 1, xpd = TRUE, col = "#ecf0f1", cex = 0.6)
+points(x = b, y = data$Production_Budget, col = "#f1c40f", type = "p", cex = 0.3, pch = 19)
+points(x = b, y = data$Opening_WeekendDomestic, col = "red", type = "p", cex = 0.3, pch = 19)
+
+title(main = "MARVEL STUDIOS", adj = 0, col.main = "#ecf0f1", font.main = 1, line = 0.2)
+title(main = "BOX OFFICE NUMBERS", adj = 0, col.main = "#ecf0f1", font.main = 1, line = -0.8, cex.main = 0.93)
+
+rect(xleft = 0, ybottom = 1000, xright = max(b), ytop = 1000, border = "#ecf0f1", lty = 2)
+text(x = 0, y = 1000, labels = "$1B", pos = 2, xpd = TRUE, col = "#ecf0f1", cex = 0.8)
+rect(xleft = 0, ybottom = 2000, xright = max(b), ytop = 2000, border = "#ecf0f1", lty = 2)
+text(x = 0, y = 2000, labels = "$2B", pos = 2, xpd = TRUE, col = "#ecf0f1", cex = 0.8)
+text(x = b[25], y = 500, labels = "Pandemic\nreleases", pos = 3, cex = 0.6, col = "#ecf0f1")
+
+legend(x = "topright", ncol = 5, col = phase_cols, legend = 1:5, title = "PHASE", bty = "n", pch = 15, xpd = TRUE, text.col = "#ecf0f1", pt.cex = 1.2, cex = 0.7)
+text(x = 0, y = 250, labels = "Budget", pos = 2, xpd = TRUE, col = "#f1c40f", cex = 0.6)
+text(x = 0, y = 100, labels = "Opening", pos = 2, xpd = TRUE, col = "red", cex = 0.6)
+
+#Tomatometer scores
+data$tomatometer = cut(data$Review_ScoreRotten_Tomatoes, breaks = c(0, 60, 75, 100), labels = c("Rotten", "Fresh", "Certified_Fresh"))
+tomatometer_cols = c("#2ecc71", "#d35400", "#f39c12")
+names(tomatometer_cols) = c("Rotten", "Fresh", "Certified_Fresh")
+
+par(bg = "#34495e", mar = c(0, 3, 0, 1))
+plot(x = b, y = data$Review_ScoreRotten_Tomatoes, type = "l", ylim = c(30, 100),axes = FALSE, col = "#95a5a6")
+points(x = b, y = data$Review_ScoreRotten_Tomatoes, type = "p", col = tomatometer_cols[data$tomatometer], pch = 19, cex = 0.6)
+rect(xleft = 0, ybottom = 60, xright = max(b), ytop = 60, border = tomatometer_cols["Rotten"], lty = 2)
+text(x = 0, y = 60, labels = "Rotten", pos = 2, xpd = TRUE, col = tomatometer_cols["Rotten"], cex = 0.7)
+text(x = max(b), y = 60, labels = "<60%", pos = 4, xpd = TRUE, col = tomatometer_cols["Rotten"], cex = 0.7)
+rect(xleft = 0, ybottom = 75, xright = max(b), ytop = 75, border = tomatometer_cols["Certified_Fresh"], lty = 2)
+text(x = 0, y = 75, labels = "Certified\nFresh", pos = 2, xpd = TRUE, col = tomatometer_cols["Certified_Fresh"], cex = 0.7)
+text(x = max(b), y = 75, labels = ">75%", pos = 4, xpd = TRUE, col = tomatometer_cols["Certified_Fresh"], cex = 0.7)
+
+text(x = 10, y = 30, labels = "ROTTEN TOMATOES CRTIC RATINGS", pos = 3, adj = 0, col = "#ecf0f1", cex = 0.8)
+
+max_idx = which(data$Review_ScoreRotten_Tomatoes == max(data$Review_ScoreRotten_Tomatoes))
+max_score = data[max_idx, "Review_ScoreRotten_Tomatoes"]
+max_xpos = b[max_idx,]
+text(x = max_xpos, y = max_score, label = paste0(max_score, "%\nHigh"), col = "#ecf0f1", pos = 4, cex = 0.5)
+```
+
 
 ## BRICS vs G7 GDP
 
