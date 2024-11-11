@@ -27,6 +27,44 @@ Following are the major sources of all the recreated plots.
 
 Finally, I apologize in advance for the uncommented code.
 
+## Data cost
+
+Recreating the plot from [visualcapitalist](https://www.visualcapitalist.com/the-cost-of-1-gb-of-mobile-data-worldwide/)
+
+```{r, fig.height=8.2, fig.width=7}
+data = read.delim(file = "data/24-data_cost.tsv", sep = "\t")
+
+par(mar = c(0, 5, 0, 0), bg = "#2c3e50")
+b=barplot(data$cost_per_g, horiz = TRUE, xlim = c(0, ceiling(max(data$cost_per_g))), axes = FALSE, col = ifelse(test = data$country == "Worldwide", yes = "#34495e", no = "#2ecc71"), border = "#16a085")
+text(x = 0, y = b, label = toupper(data$country), adj = 0, cex = 0.6, pos = 2, xpd = TRUE, font = 2, col = "#ecf0f1")
+text(x = data$cost_per_g, y = b, label = paste0("$", data$cost_per_g), adj = 0, cex = 0.6, pos = 4, xpd = TRUE, font = 2, col = "#ecf0f1")
+text(x = 3, y = b[length(b)-20], 
+     label = "T H E      C O S T      O F\n---------------------------------\n\n", 
+     pos = 4, col = "white", cex = 1.6)
+text(x = 3, y = b[length(b)-23], label = "M O B I L E\nD A T A", pos = 4, cex = 3, font = 2, col = "white")
+text(x = 3, y = b[length(b)-29], label = "---------------------------------\n\n", pos = 4, col = "white", cex = 1.6)
+
+text(x = max(data$cost_per_g)+0.2, y = b[4], label = "Average price\nfor 1GB (USD)", pos = 3, col = "white", cex = 0.6, font = 2)
+arrows(x0 = max(data$cost_per_g)+0.3, y1 = b[2], x1 = max(data$cost_per_g)+0.3, y0 = b[4], length = 0.1, col = "white", lwd = 2)
+
+india_at = subset(data, country == "India")[,2]
+
+arrows(x1 = india_at+0.6, y1 = b[50], x0 = india_at+2, y0 = b[50], length = 0.1, col = "white", lwd = 2)
+inida_txt = "Hyper-competition among major\noperators is key factor driving\nlow prices in India"
+text(x = india_at+2, y = b[49], label = inida_txt, pos = 4, col = "white", cex = 0.8, font = 1)
+
+# rect(xleft = 0, ybottom = seq(0.2, nrow(data)-1, 1), xright = data$cost_per_g, ytop = seq(0.8, nrow(data)-1, 1), col = "#16a085", border = NA)
+# text(x = 0, y = seq(0.45, nrow(data)-1, 1), label = data$country, adj = 0, cex = 0.6)
+
+# if("berryFunctions" %in% installed.packages()){
+#   berryFunctions::roundedRect(xleft = 0, ybottom = seq(0.1, nrow(data)-1, 1), xright = data$cost_per_g, ytop = seq(0.9, nrow(data)-1, 1))
+# }else{
+#   rect(xleft = 0, ybottom = seq(0.05, nrow(data)-1, 1), xright = data$cost_per_g, ytop = seq(0.95, nrow(data)-1, 1))
+# }
+
+```
+
+
 ## Marvel Box Office
 
 Recreating the plot from [visualcapitalist](https://www.visualcapitalist.com/charted-marvel-box-office/)
